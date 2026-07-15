@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GradWay 2.0 - ระบบวางแผนหลักสูตรและเกียรตินิยม</title>
+    <title>GradWay Bhali - ระบบพยากรณ์หลักสูตรและเกียรตินิยม</title>
 
     <!-- Fonts: Inter & LINE Seed Sans TH (Fallback to Kanit/Sarabun) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,62 +16,60 @@
 
     <style>
         /* ==========================================================================
-           GradWay 2.0 - Theme & Core Styling (Fix: Background vanishing)
+           Dhamma Bhali Design System - Theme Setup (Inspired by image_4c7084.png)
            ========================================================================== */
         :root {
-            /* Default: Indigo Theme (Light Mode) */
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --primary-light: #eef2ff;
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 8px -1px rgba(15, 23, 42, 0.03);
-            --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
+            /* Theme 1: Original Deep Purple & Golden Dhamma (Default Premium) */
+            --primary: #D80F7B;
+            --primary-glow: #FCD4FC;
+            --accent-gold: #DFBC73;
+            --bright-gold: #FCD16C;
+            --bg-body: #16111C;
+            --bg-card: #1E132A;
+            --bg-card-rgb: 30, 19, 42;
+            --text-main: #FFFFFF;
+            --text-muted: #E8C67D;
+            --border-color: rgba(223, 188, 115, 0.3);
+            --shadow: 0 8px 32px 0 rgba(22, 17, 28, 0.5);
+            --shadow-glow: 0 0 15px rgba(252, 209, 108, 0.35);
             --radius-sm: 12px;
             --radius-md: 20px;
             --radius-lg: 28px;
         }
 
-        /* Theme Variations */
-        [data-theme="emerald"] {
-            --primary: #10b981;
-            --primary-hover: #059669;
-            --primary-light: #ecfdf5;
-        }
-        [data-theme="rose"] {
-            --primary: #f43f5e;
-            --primary-hover: #e11d48;
-            --primary-light: #fff1f2;
-        }
-        [data-theme="amber"] {
-            --primary: #f59e0b;
-            --primary-hover: #d97706;
-            --primary-light: #fef3c7;
-        }
-        [data-theme="slate"] {
-            --primary: #475569;
-            --primary-hover: #334155;
-            --primary-light: #f1f5f9;
+        /* Dark / Light Variations under the Dhamma Bhali Aesthetic */
+        body.light {
+            --bg-body: #FAF7F2;
+            --bg-card: #FFFFFF;
+            --bg-card-rgb: 255, 255, 255;
+            --text-main: #1A0C22;
+            --text-muted: #6C5A49;
+            --border-color: rgba(223, 188, 115, 0.5);
+            --shadow: 0 8px 24px rgba(223, 188, 115, 0.15);
+            --shadow-glow: 0 0 10px rgba(216, 15, 123, 0.15);
         }
 
-        /* Dark Mode Overrides */
-        body.dark {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 30px -5px rgba(0, 0, 0, 0.45);
+        /* 5 Customizable Spiritual Themes from Dhamma Bhali */
+        [data-theme="majestica"] {
+            --primary: #D80F7B;
+            --accent-gold: #DFBC73;
         }
-        body.dark[data-theme="indigo"] { --primary-light: #1e1b4b; }
-        body.dark[data-theme="emerald"] { --primary-light: #064e3b; }
-        body.dark[data-theme="rose"] { --primary-light: #4c0519; }
-        body.dark[data-theme="amber"] { --primary-light: #451a03; }
-        body.dark[data-theme="slate"] { --primary-light: #1e293b; }
+        [data-theme="buddha-gold"] {
+            --primary: #DFBC73;
+            --accent-gold: #FCD16C;
+        }
+        [data-theme="lotus-pink"] {
+            --primary: #FF7ED2;
+            --accent-gold: #E8C67D;
+        }
+        [data-theme="dhamma-green"] {
+            --primary: #10B981;
+            --accent-gold: #FCD16C;
+        }
+        [data-theme="siam-ruby"] {
+            --primary: #B91C1C;
+            --accent-gold: #DFBC73;
+        }
 
         * {
             margin: 0;
@@ -80,109 +78,135 @@
             font-family: 'LINE Seed Sans TH', 'Inter', 'Kanit', sans-serif;
         }
 
-        /* Force background-color on html and body to ensure background never disappears */
         html, body {
             background-color: var(--bg-body) !important;
             color: var(--text-main);
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            transition: background-color 0.4s, color 0.4s, border-color 0.4s;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: radial-gradient(circle at 50% 10%, rgba(223, 188, 115, 0.08), transparent 60%);
         }
 
-        /* Header Style */
+        /* Header Layout styling */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 40px;
+            padding: 18px 40px;
             background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--accent-gold);
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: var(--shadow);
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: background-color 0.3s;
         }
 
-        .logo {
+        .logo-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .logo i {
-            font-size: 28px;
-            color: var(--primary);
-            transition: color 0.3s;
+        .lotus-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--bright-gold) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-glow);
+            border: 2px solid var(--accent-gold);
         }
 
-        .logo h1 {
+        .lotus-logo svg {
+            width: 26px;
+            height: 26px;
+            fill: #ffffff;
+        }
+
+        .logo-text h1 {
             font-size: 24px;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--bright-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .controls-wrapper {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
         }
 
-        /* Color Theme Selector */
+        /* Dhamma Bhali Theme Selector */
         .theme-selector {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
-            background: var(--primary-light);
-            padding: 6px 12px;
-            border-radius: 100px;
-            transition: background-color 0.3s;
+            background: rgba(var(--bg-card-rgb), 0.6);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
         }
 
         .theme-dot {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.25s, border-color 0.25s;
         }
 
         .theme-dot:hover {
-            transform: scale(1.15);
+            transform: scale(1.25);
         }
 
         .theme-dot.active {
-            border-color: var(--text-main);
+            border-color: var(--bright-gold);
+            box-shadow: 0 0 8px var(--bright-gold);
         }
 
-        .theme-indigo { background-color: #4f46e5; }
-        .theme-emerald { background-color: #10b981; }
-        .theme-rose { background-color: #f43f5e; }
-        .theme-amber { background-color: #f59e0b; }
-        .theme-slate { background-color: #475569; }
+        .theme-majestica { background-color: #D80F7B; }
+        .theme-buddha-gold { background-color: #DFBC73; }
+        .theme-lotus-pink { background-color: #FF7ED2; }
+        .theme-dhamma-green { background-color: #10B981; }
+        .theme-siam-ruby { background-color: #B91C1C; }
 
         .header-menu button {
-            width: 40px;
-            height: 40px;
-            border: none;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border-color);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
-            background-color: var(--primary-light);
-            color: var(--primary);
+            font-size: 18px;
+            background-color: rgba(var(--bg-card-rgb), 0.8);
+            color: var(--bright-gold);
             transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow);
         }
 
         .header-menu button:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            border-color: var(--bright-gold);
+            color: var(--primary);
         }
 
-        /* Profile & Main Layout */
+        /* Container and Profiles layout */
         .container {
             max-width: 1300px;
             width: 100%;
@@ -195,37 +219,57 @@
             display: grid;
             grid-template-columns: 1fr auto;
             align-items: center;
-            background-color: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: 30px;
-            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(30, 19, 42, 0.7) 100%);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 28px;
             box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transition: background-color 0.3s, border-color 0.3s;
+            border: 2px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        /* Lotus Watermark Ornament in Background */
+        .profile-section::after {
+            content: '';
+            position: absolute;
+            right: -40px;
+            bottom: -40px;
+            width: 260px;
+            height: 260px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50,15 C55,30 65,35 65,45 C65,55 55,65 50,75 C45,65 35,55 35,45 C35,35 45,30 50,15 Z M50,25 C45,35 38,45 38,52 C38,60 45,65 50,72 C55,65 62,60 62,52 C62,45 55,35 50,25 Z' fill='%23DFBC73' opacity='0.08'/></svg>");
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
         }
 
         .profile-info {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 28px;
+        }
+
+        .avatar-container {
+            position: relative;
         }
 
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background-color: var(--primary-light);
-            color: var(--primary);
+            background-color: rgba(223, 188, 115, 0.12);
+            color: var(--bright-gold);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
-            border: 1px solid var(--border-color);
+            font-size: 38px;
+            border: 2px dashed var(--accent-gold);
             transition: 0.3s;
         }
 
         .profile-details h2 {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
@@ -236,72 +280,82 @@
         .profile-details p {
             color: var(--text-muted);
             font-size: 15px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .edit-profile-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: var(--bright-gold);
             cursor: pointer;
             font-size: 14px;
-            margin-top: 6px;
+            margin-top: 8px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: color 0.2s;
+            transition: color 0.2s, transform 0.2s;
         }
 
         .edit-profile-btn:hover {
             color: var(--primary);
+            transform: translateX(4px);
         }
 
         .profile-stats {
             display: flex;
-            gap: 16px;
+            gap: 20px;
+            z-index: 2;
         }
 
         .stat-card {
-            background-color: var(--primary-light);
-            padding: 16px 24px;
-            border-radius: var(--radius-sm);
+            background-color: rgba(223, 188, 115, 0.08);
+            padding: 20px 28px;
+            border-radius: var(--radius-md);
             text-align: center;
-            min-width: 140px;
-            transition: background-color 0.3s;
+            min-width: 150px;
+            border: 1px solid var(--border-color);
+            transition: 0.3s;
         }
 
         .stat-card h4 {
             font-size: 13px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
 
         .stat-card p {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--bright-gold);
+            text-shadow: var(--shadow-glow);
         }
 
-        /* Dashboard Metric Cards Grid */
+        /* Astrological Dashboard layout */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .metric-card {
             background-color: var(--bg-card);
             border-radius: var(--radius-md);
-            padding: 24px;
+            padding: 26px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, border-color 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
             position: relative;
             overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--bright-gold);
+            box-shadow: var(--shadow-glow);
         }
 
         .metric-card::before {
@@ -311,8 +365,7 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            background-color: var(--primary);
-            transition: background-color 0.3s;
+            background: linear-gradient(to bottom, var(--primary), var(--bright-gold));
         }
 
         .metric-card h3 {
@@ -320,10 +373,12 @@
             color: var(--text-muted);
             margin-bottom: 12px;
             font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .metric-card .value {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
@@ -334,19 +389,22 @@
         .metric-card .sub-value {
             font-size: 13px;
             color: var(--text-muted);
-            margin-top: 8px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Status & Badge Colors */
-        .status-normal { color: #10b981 !important; }
-        .status-probation { color: #f59e0b !important; }
-        .status-retired { color: #ef4444 !important; }
+        /* Status colors */
+        .status-normal { color: #10B981 !important; text-shadow: 0 0 8px rgba(16,185,129,0.3); }
+        .status-probation { color: #F59E0B !important; text-shadow: 0 0 8px rgba(245,158,11,0.3); }
+        .status-retired { color: #EF4444 !important; text-shadow: 0 0 8px rgba(239,68,68,0.3); }
 
         /* Two Column Layout */
         .main-layout {
             display: grid;
             grid-template-columns: 2fr 1.3fr;
-            gap: 24px;
+            gap: 28px;
             align-items: start;
         }
 
@@ -361,101 +419,113 @@
             border-radius: var(--radius-md);
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
-            padding: 24px;
-            margin-bottom: 24px;
-            transition: background-color 0.3s, border-color 0.3s;
+            padding: 28px;
+            margin-bottom: 28px;
+            transition: 0.3s;
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
         }
 
         .section-title div {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .section-title i {
-            color: var(--primary);
+            color: var(--bright-gold);
         }
 
-        /* Completion Notification Banner style */
+        /* Completion Banner styled elegantly */
         .completion-banner {
-            background-color: rgba(16, 185, 129, 0.1);
-            border: 1px dashed #10b981;
+            background: linear-gradient(135deg, rgba(216, 15, 123, 0.15) 0%, rgba(252, 209, 108, 0.08) 100%);
+            border: 1.5px solid var(--accent-gold);
             border-radius: var(--radius-sm);
-            padding: 12px 16px;
-            margin-bottom: 16px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: #10b981;
-            font-size: 14px;
+            gap: 14px;
+            color: var(--bright-gold);
+            font-size: 14.5px;
             font-weight: 500;
-            animation: fadeIn 0.4s ease-out;
+            box-shadow: var(--shadow-glow);
+            animation: fadeIn 0.5s ease-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Toolbar / Filters */
+        /* Toolbar and Filters styled with beautiful gold outline pills */
         .course-toolbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
         .filter-select {
-            padding: 8px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1.5px solid var(--accent-gold);
             background-color: var(--bg-body) !important;
             color: var(--text-main);
             outline: none;
             font-size: 14px;
-            transition: 0.2s;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
+        .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Pill Buttons representing the Dhamma Bhali Component Style Guide */
         .btn-primary {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, #1A0C22 100%);
             color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--accent-gold);
+            padding: 12px 24px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: background-color 0.2s, transform 0.1s;
+            gap: 10px;
+            box-shadow: var(--shadow-glow);
+            transition: 0.3s, transform 0.1s;
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--primary);
         }
 
         .btn-primary:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
-        /* Tables styling */
+        /* Table Layout Styling */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--accent-gold);
         }
 
         table {
@@ -466,15 +536,16 @@
         }
 
         th {
-            background-color: var(--primary-light);
-            color: var(--primary);
-            padding: 14px 16px;
+            background-color: rgba(223, 188, 115, 0.12);
+            color: var(--bright-gold);
+            padding: 16px;
             font-weight: 600;
             font-size: 14px;
+            border-bottom: 2px solid var(--accent-gold);
         }
 
         td {
-            padding: 14px 16px;
+            padding: 16px;
             border-bottom: 1px solid var(--border-color);
             font-size: 14px;
             color: var(--text-main);
@@ -485,31 +556,34 @@
         }
 
         tr:hover td {
-            background-color: var(--primary-light);
+            background-color: rgba(223, 188, 115, 0.08);
             transition: background-color 0.2s;
         }
 
+        /* Auspicious Badges indicating grades */
         .badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 4px 8px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 50px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 12.5px;
+            border: 1px solid transparent;
         }
 
-        .badge-a { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .badge-b { background-color: rgba(99, 102, 241, 0.15); color: #6366f1; }
-        .badge-c { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        .badge-d { background-color: rgba(244, 63, 94, 0.15); color: #f43f5e; }
-        .badge-f { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .badge-a { background-color: rgba(16, 185, 129, 0.15); color: #10B981; border-color: rgba(16, 185, 129, 0.4); }
+        .badge-b { background-color: rgba(99, 102, 241, 0.15); color: #6366F1; border-color: rgba(99, 102, 241, 0.4); }
+        .badge-c { background-color: rgba(245, 158, 11, 0.15); color: #F59E0B; border-color: rgba(245, 158, 11, 0.4); }
+        .badge-d { background-color: rgba(244, 63, 94, 0.15); color: #F43F5E; border-color: rgba(244, 63, 94, 0.4); }
+        .badge-f { background-color: rgba(239, 68, 68, 0.2); color: #EF4444; border-color: rgba(239, 68, 68, 0.5); }
 
         .cat-badge {
-            font-size: 11px;
-            background-color: var(--border-color);
+            font-size: 11.5px;
+            background-color: rgba(223, 188, 115, 0.1);
             color: var(--text-muted);
-            padding: 3px 8px;
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
             border-radius: 100px;
             max-width: 180px;
             white-space: nowrap;
@@ -526,34 +600,32 @@
 
         .icon-btn {
             background: none;
-            border: none;
+            border: 1px solid var(--border-color);
             color: var(--text-muted);
             cursor: pointer;
-            padding: 6px;
-            border-radius: 6px;
-            transition: 0.2s;
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.25s;
         }
 
         .icon-btn:hover {
-            background-color: var(--border-color);
+            border-color: var(--bright-gold);
+            color: var(--bright-gold);
+            transform: scale(1.1);
         }
 
         .icon-btn.delete:hover {
-            color: #ef4444;
+            color: #EF4444;
+            border-color: rgba(239, 68, 68, 0.4);
             background-color: rgba(239, 68, 68, 0.1);
         }
 
-        .icon-btn.edit:hover {
-            color: var(--primary);
-            background-color: var(--primary-light);
-        }
-
-        /* Checklist structural indicators */
+        /* Checklist items with golden bar style */
         .checklist-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 14px 0;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -571,46 +643,48 @@
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .checklist-name i {
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 6px;
-            background-color: var(--border-color);
+            height: 8px;
+            background-color: rgba(223, 188, 115, 0.15);
             border-radius: 100px;
             margin-top: 8px;
             overflow: hidden;
+            border: 0.5px solid var(--border-color);
         }
 
         .progress-bar-fill {
             height: 100%;
-            background-color: var(--primary);
+            background: linear-gradient(to right, var(--primary), var(--bright-gold));
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .progress-bar-fill.complete {
-            background-color: #10b981;
+            background: linear-gradient(to right, #10B981, var(--bright-gold));
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
         }
 
-        /* Modals style */
+        /* Elegant Modal Style resembling image_4c7084.png design patterns */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.6);
+            background-color: rgba(22, 17, 28, 0.8);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
         }
 
         .modal.show {
@@ -619,19 +693,19 @@
 
         .modal-content {
             background-color: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: 30px;
+            border-radius: var(--radius-lg);
+            padding: 34px;
             width: 100%;
             max-width: 550px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
-            animation: modalSlide 0.25s ease-out;
+            border: 2px solid var(--accent-gold);
+            box-shadow: var(--shadow-glow);
+            animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: 90vh;
             overflow-y: auto;
         }
 
         @keyframes modalSlide {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -640,81 +714,93 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            border-bottom: 1.5px solid var(--accent-gold);
+            padding-bottom: 14px;
         }
 
         .modal-header h2 {
             font-size: 20px;
             font-weight: 700;
+            color: var(--bright-gold);
         }
 
         .close-modal-btn {
             background: none;
             border: none;
-            font-size: 22px;
+            font-size: 24px;
             color: var(--text-muted);
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal-btn:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text-muted);
+            letter-spacing: 0.3px;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--accent-gold);
             background-color: var(--bg-body) !important;
             color: var(--text-main);
             outline: none;
-            font-size: 14px;
-            transition: border-color 0.2s;
+            font-size: 14.5px;
+            transition: border-color 0.25s, box-shadow 0.25s;
         }
 
         .form-control:focus {
             border-color: var(--primary);
+            box-shadow: var(--shadow-glow);
         }
 
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 14px;
+            margin-top: 28px;
         }
 
         .btn-secondary {
             background-color: transparent;
             color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
-            transition: 0.2s;
+            transition: 0.25s;
         }
 
         .btn-secondary:hover {
-            background-color: var(--primary-light);
+            background-color: rgba(223, 188, 115, 0.1);
+            border-color: var(--accent-gold);
         }
 
-        /* Line chart style */
+        /* Trend Line chart card layout */
         .chart-card {
             background-color: var(--bg-card);
             border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--accent-gold);
             box-shadow: var(--shadow);
-            padding: 24px;
-            margin-bottom: 24px;
-            transition: background-color 0.3s, border-color 0.3s;
+            padding: 28px;
+            margin-bottom: 28px;
+            transition: 0.3s;
         }
 
         .chart-container {
@@ -723,83 +809,46 @@
             width: 100%;
         }
 
-        /* Footer styling */
+        /* Footer Elegant styling */
         footer {
-            padding: 30px;
+            padding: 34px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 13px;
-            border-top: 1px solid var(--border-color);
+            font-size: 13.5px;
+            border-top: 2px solid var(--accent-gold);
             margin-top: 40px;
             background-color: var(--bg-card);
         }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: var(--primary);
-            border-radius: 100px;
-        }
-        ::-webkit-scrollbar-track {
-            background-color: transparent;
-        }
-
-        /* Adaptive viewports */
-        @media (max-width: 768px) {
-            header {
-                padding: 16px 20px;
-                flex-direction: column;
-                gap: 16px;
-            }
-            .profile-section {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 20px;
-            }
-            .profile-info {
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-            .profile-stats {
-                width: 100%;
-                justify-content: space-between;
-                gap: 12px;
-            }
-            .stat-card {
-                flex: 1;
-                min-width: 0;
-                padding: 12px;
-            }
-            .container {
-                padding: 16px 12px;
-            }
-        }
     </style>
 </head>
-<body class="dark"> <!-- Defaulting to Premium Neutral dark theme -->
+<body>
 
-    <!-- Header Navigation -->
+    <!-- Header Navigation representing Dhamma Bhali Aesthetic -->
     <header>
-        <div class="logo">
-            <i class="fa-solid fa-graduation-cap"></i>
-            <h1>GradWay 2.0</h1>
+        <div class="logo-wrap">
+            <div class="lotus-logo">
+                <!-- SVG Lotus blossom representation -->
+                <svg viewBox="0 0 100 100">
+                    <path d="M50,12 C58,32 74,38 74,52 C74,68 58,82 50,88 C42,82 26,68 26,52 C26,38 42,32 50,12 Z M50,26 C43,38 35,48 35,58 C35,68 43,74 50,80 C57,74 65,68 65,58 C65,48 57,38 50,26 Z" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>GradWay Bhali</h1>
+                <p>ธรรมะบาลี • พยากรณ์ดวงการเรียน</p>
+            </div>
         </div>
         <div class="controls-wrapper">
-            <!-- Theme Selection Dots -->
+            <!-- Spiritual Theme Selection Dots -->
             <div class="theme-selector" id="themeSelector">
-                <span class="theme-dot theme-indigo active" onclick="setTheme('indigo')" title="Indigo Theme"></span>
-                <span class="theme-dot theme-emerald" onclick="setTheme('emerald')" title="Emerald Theme"></span>
-                <span class="theme-dot theme-rose" onclick="setTheme('rose')" title="Rose Theme"></span>
-                <span class="theme-dot theme-amber" onclick="setTheme('amber')" title="Amber Theme"></span>
-                <span class="theme-dot theme-slate" onclick="setTheme('slate')" title="Slate Theme"></span>
+                <span class="theme-dot theme-majestica active" onclick="setTheme('majestica')" title="มาเจนต้าประกายบารมี"></span>
+                <span class="theme-dot theme-buddha-gold" onclick="setTheme('buddha-gold')" title="ทองพุทธะเรืองรอง"></span>
+                <span class="theme-dot theme-lotus-pink" onclick="setTheme('lotus-pink')" title="ชมพูกลีบบัวสวรรค์"></span>
+                <span class="theme-dot theme-dhamma-green" onclick="setTheme('dhamma-green')" title="เขียวขจีมรรคผล"></span>
+                <span class="theme-dot theme-siam-ruby" onclick="setTheme('siam-ruby')" title="แดงทับทิมนพเก้า"></span>
             </div>
             
             <div class="header-menu">
-                <button id="themeBtn" onclick="toggleDarkMode()" title="สลับ Dark Mode">
+                <button id="themeBtn" onclick="toggleDarkMode()" title="สลับโหมด กลางวัน / กลางคืน">
                     <i class="fa-solid fa-sun"></i>
                 </button>
             </div>
@@ -813,23 +862,23 @@
         <section class="profile-section">
             <div class="profile-info">
                 <div class="avatar">
-                    <i class="fa-solid fa-user-graduate"></i>
+                    <i class="fa-solid fa-dharmachakra"></i>
                 </div>
                 <div class="profile-details">
                     <h2 id="studentName">สมชาย ตั้งใจเรียน</h2>
                     <p>รหัสนักศึกษา: <span id="studentID">6610400000</span></p>
                     <button class="edit-profile-btn" onclick="openProfileModal()">
-                        <i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูลส่วนตัว
+                        <i class="fa-solid fa-user-pen"></i> จารึกข้อมูลส่วนตัว (แก้ไขโปรไฟล์)
                     </button>
                 </div>
             </div>
             <div class="profile-stats">
                 <div class="stat-card">
-                    <h4>GPAX รวม</h4>
+                    <h4>ดัชนีปัญญาญาณ (GPAX)</h4>
                     <p id="gpaxVal">0.00</p>
                 </div>
                 <div class="stat-card">
-                    <h4>หน่วยกิตสะสม</h4>
+                    <h4>บารมีหน่วยกิตสะสม</h4>
                     <p id="totalCreditsVal">0</p>
                 </div>
             </div>
@@ -838,17 +887,17 @@
         <!-- Metric Cards Grid -->
         <section class="dashboard-grid">
             <div class="metric-card">
-                <h3>สถานภาพนักศึกษา</h3>
+                <h3>ตรวจชะตาสถานภาพ</h3>
                 <div class="value" id="statusVal">-</div>
                 <div class="sub-value" id="statusSub">-</div>
             </div>
             <div class="metric-card">
-                <h3>การคาดการณ์เกียรตินิยม</h3>
+                <h3>ทำนายวาสนาเกียรตินิยม</h3>
                 <div class="value" id="honorVal">-</div>
                 <div class="sub-value" id="honorSub">-</div>
             </div>
             <div class="metric-card">
-                <h3>ภาพรวมความคืบหน้าหลักสูตร</h3>
+                <h3>ภาพรวมอุปมามรรคผลการเรียน</h3>
                 <div class="value" id="overallProgVal">0%</div>
                 <div class="sub-value" id="overallProgSub">0 จาก 133 หน่วยกิต</div>
             </div>
@@ -867,7 +916,7 @@
                     <div class="section-title">
                         <div>
                             <i class="fa-solid fa-chart-line"></i>
-                            แนวโน้มเกรดเฉลี่ยสะสม & รายเทอม (GPA / GPAX)
+                            ทัศนะแนวโน้มปัญญาญาณรายเทอม (GPA / GPAX Trend)
                         </div>
                     </div>
                     <div class="chart-container">
@@ -881,7 +930,7 @@
                         <div class="section-title" style="margin-bottom: 0;">
                             <div>
                                 <i class="fa-solid fa-book-open"></i>
-                                รายวิชาที่ลงทะเบียนเรียนทั้งหมด
+                                จารึกวิชาเรียนที่บำเพ็ญแล้ว (รายวิชาทั้งหมด)
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
@@ -901,7 +950,7 @@
                                 <option value="4-3">ปี 4 Summer</option>
                             </select>
                             <button class="btn-primary" onclick="openAddCourseModal()">
-                                <i class="fa-solid fa-plus"></i> เพิ่มวิชาเรียน
+                                <i class="fa-solid fa-plus"></i> จารึกรายวิชาใหม่
                             </button>
                         </div>
                     </div>
@@ -912,11 +961,11 @@
                                 <tr>
                                     <th>รหัสวิชา</th>
                                     <th>ชื่อวิชา</th>
-                                    <th>เทอม</th>
+                                    <th>ภาคเทอม</th>
                                     <th>หน่วยกิต</th>
-                                    <th>เกรด</th>
-                                    <th>หมวดหมู่</th>
-                                    <th style="text-align: right;">จัดการ</th>
+                                    <th>เกรดผลลัพธ์</th>
+                                    <th>หมวดหมู่สารัตถะ</th>
+                                    <th style="text-align: right;">จัดการการเรียน</th>
                                 </tr>
                             </thead>
                             <tbody id="courseTableBody">
@@ -933,14 +982,14 @@
                     <div class="section-title">
                         <div>
                             <i class="fa-solid fa-clipboard-check"></i>
-                            ความคืบหน้าหลักสูตร (133 นก.)
+                            พระไตรปิฎกหลักสูตร ( Checklist 133 นก. )
                         </div>
                     </div>
 
                     <!-- General Education (33 Credits) -->
                     <div style="margin-bottom: 24px;">
                         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>1. หมวดศึกษาทั่วไป (33 นก.)</span>
+                            <span>1. หมวดปัญญาญาณทั่วไป (ศึกษาทั่วไป 33 นก.)</span>
                             <span id="cat-ge-progress" style="font-size: 13px; color: var(--text-muted);">0 / 33 นก.</span>
                         </h4>
                         
@@ -1026,7 +1075,7 @@
                     <!-- Core Credits (27 Credits) -->
                     <div style="margin-bottom: 24px;">
                         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>2. กลุ่มวิชาแกน (27 นก.)</span>
+                            <span>2. กลุ่มวิชาแกนหลักธรรม (วิชาแกน 27 นก.)</span>
                             <span id="cat-core-progress" style="font-size: 13px; color: var(--text-muted);">0 / 27 นก.</span>
                         </h4>
                         <div class="checklist-item">
@@ -1045,7 +1094,7 @@
                     <!-- Major Credits (67 Credits: Required 52, Elective 15) -->
                     <div style="margin-bottom: 24px;">
                         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>3. กลุ่มวิชาเฉพาะ (67 นก.)</span>
+                            <span>3. กลุ่มวิชาเฉพาะทาง (67 นก.)</span>
                             <span id="cat-major-progress" style="font-size: 13px; color: var(--text-muted);">0 / 67 นก.</span>
                         </h4>
                         
@@ -1054,7 +1103,7 @@
                             <div class="checklist-details">
                                 <div class="checklist-name">
                                     <span id="check-major-req"><i class="fa-solid fa-circle-notch text-muted"></i></span>
-                                    วิชาชีพบังคับ (>= 52 นก.)
+                                    วิชาชีพบังคับหลัก (>= 52 นก.)
                                 </div>
                                 <div class="progress-bar-container">
                                     <div class="progress-bar-fill" id="bar-major-req"></div>
@@ -1067,7 +1116,7 @@
                             <div class="checklist-details">
                                 <div class="checklist-name">
                                     <span id="check-major-elec"><i class="fa-solid fa-circle-notch text-muted"></i></span>
-                                    วิชาชีพเลือก (>= 15 นก.)
+                                    วิชาชีพเลือกเสริม (>= 15 นก.)
                                 </div>
                                 <div class="progress-bar-container">
                                     <div class="progress-bar-fill" id="bar-major-elec"></div>
@@ -1079,7 +1128,7 @@
                     <!-- Free Elective (6 Credits) -->
                     <div>
                         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-                            <span>4. หมวดเลือกเสรี (6 นก.)</span>
+                            <span>4. หมวดเลือกเสรีอิสระ (เลือกเสรี 6 นก.)</span>
                             <span id="cat-free-progress" style="font-size: 13px; color: var(--text-muted);">0 / 6 นก.</span>
                         </h4>
                         <div class="checklist-item">
@@ -1106,21 +1155,21 @@
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>แก้ไขข้อมูลผู้เรียน</h2>
+                <h2>จารึกประวัตินักศึกษา (ข้อมูลส่วนตัว)</h2>
                 <button class="close-modal-btn" onclick="closeProfileModal()">&times;</button>
             </div>
             <form id="profileForm" onsubmit="saveProfile(event)">
                 <div class="form-group">
                     <label for="editName">ชื่อ - นามสกุล</label>
-                    <input type="text" id="editName" class="form-control" placeholder="ระบุชื่อและนามสกุล" required autocomplete="off">
+                    <input type="text" id="editName" class="form-control" placeholder="ระบุชื่อและนามสกุลผู้บำเพ็ญวิชา" required autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="editID">รหัสนักศึกษา</label>
                     <input type="text" id="editID" class="form-control" placeholder="เช่น 6610400000" required autocomplete="off">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeProfileModal()">ยกเลิก</button>
-                    <button type="submit" class="btn-primary">บันทึกข้อมูล</button>
+                    <button type="button" class="btn-secondary" onclick="closeProfileModal()">ยกเลิกการแก้ไข</button>
+                    <button type="submit" class="btn-primary">บันทึกจารึกข้อมูล</button>
                 </div>
             </form>
         </div>
@@ -1130,7 +1179,7 @@
     <div id="courseModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">เพิ่มรายวิชาเรียน</h2>
+                <h2 id="modalTitle">จารึกรายวิชาเรียน</h2>
                 <button class="close-modal-btn" onclick="closeCourseModal()">&times;</button>
             </div>
             <form id="courseForm" onsubmit="saveCourse(event)">
@@ -1203,7 +1252,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="closeCourseModal()">ยกเลิก</button>
-                    <button type="submit" class="btn-primary" id="saveCourseBtn">บันทึกรายวิชา</button>
+                    <button type="submit" class="btn-primary" id="saveCourseBtn">บันทึกรายวิชาลงจารึก</button>
                 </div>
             </form>
         </div>
@@ -1211,7 +1260,7 @@
 
     <!-- Application Footer -->
     <footer>
-        <p>GradWay 2.0 &copy; 2026 - Minimal Personal Curriculum Tracker. Data stored locally.</p>
+        <p>GradWay Bhali &copy; 2026 - Dhamma Bhali Design System. All Academic Progress recorded locally on your device.</p>
     </footer>
 
     <!-- App System Scripts -->
@@ -1249,7 +1298,7 @@
                 name: "สมชาย ตั้งใจเรียน",
                 id: "6610400000"
             },
-            theme: "indigo",
+            theme: "majestica",
             darkMode: true
         };
 
@@ -1287,11 +1336,11 @@
             if (localDark) {
                 state.darkMode = localDark === "true";
             } else {
-                // Defautly premium dark
                 state.darkMode = true;
             }
 
             // Set Theme Custom Styles
+            document.body.classList.toggle("light", !state.darkMode);
             document.body.classList.toggle("dark", state.darkMode);
             document.documentElement.setAttribute("data-theme", state.theme);
             
@@ -1333,10 +1382,11 @@
             updateAllCalculations();
         }
 
-        // Theme Toggle Dark
+        // Theme Toggle Dark/Light Mode
         function toggleDarkMode() {
             state.darkMode = !state.darkMode;
             localStorage.setItem("gradway_dark", state.darkMode);
+            document.body.classList.toggle("light", !state.darkMode);
             document.body.classList.toggle("dark", state.darkMode);
             
             const themeBtn = document.getElementById("themeBtn");
@@ -1397,21 +1447,21 @@
             const statusSub = document.getElementById("statusSub");
 
             if (totalEnrolledCredits === 0) {
-                statusVal.innerText = "ปกติ";
-                statusVal.className = "value status-normal";
-                statusSub.innerText = "ลงทะเบียนเรียนรายวิชาเพื่อคำนวณสถานะ";
+                statusVal.innerText = "ดวงวิชาเริ่มต้น";
+                statusVal.className = "value";
+                statusSub.innerText = "กรุณาจารึกรายวิชาเรียนเพื่อเริ่มตรวจชะตา";
             } else if (gpax < 1.50) {
-                statusVal.innerText = "พ้นสภาพการศึกษา";
+                statusVal.innerText = "พ้นสภาพการเรียน";
                 statusVal.className = "value status-retired";
-                statusSub.innerText = "GPAX ต่ำกว่าเกณฑ์พ้นสภาพการศึกษา (< 1.50)";
+                statusSub.innerText = "ค่าเฉลี่ยต่ำกว่าเกณฑ์สิ้นสุดสัญญาวิชา (< 1.50)";
             } else if (gpax < 2.00) {
                 statusVal.innerText = "วิทยาทัณฑ์ (Probation)";
                 statusVal.className = "value status-probation";
-                statusSub.innerText = "เกรดเฉลี่ยต่ำกว่าระดับปกติสะสม (< 2.00)";
+                statusSub.innerText = "ดวงการเรียนเฝ้าระวังบ่มเพาะปัญญา (< 2.00)";
             } else {
-                statusVal.innerText = "ปกติ";
+                statusVal.innerText = "ปกติสุขถาวร";
                 statusVal.className = "value status-normal";
-                statusSub.innerText = "สถานภาพการเรียนอยู่ในเกณฑ์ปกติ";
+                statusSub.innerText = "สถานภาพการเรียนมั่นคงเป็นปกติวิสัย";
             }
 
             // Predict Honors Class Eligibility
@@ -1419,25 +1469,25 @@
             const honorSub = document.getElementById("honorSub");
 
             if (hasF) {
-                honorVal.innerText = "หมดสิทธิ์";
+                honorVal.innerText = "หมดวาสนา";
                 honorVal.className = "value status-retired";
-                honorSub.innerText = "เนื่องจากมีรายวิชาติดเกรด F";
+                honorSub.innerText = "ติดวิบากผลการเรียน ได้เกรด F ในหลักสูตร";
             } else if (hasRepeated) {
-                honorVal.innerText = "หมดสิทธิ์";
+                honorVal.innerText = "หมดวาสนา";
                 honorVal.className = "value status-retired";
-                honorSub.innerText = "เนื่องจากลงทะเบียนเรียนซ้ำรายวิชา";
+                honorSub.innerText = "พบการจารึกวิชาเรียนซ้ำซ้อนในสมุดประวัติ";
             } else if (gpax >= 3.75) {
-                honorVal.innerText = "เกียรตินิยมอันดับ 1";
+                honorVal.innerText = "เกียรตินิยมชั้นเอก (อันดับ 1)";
                 honorVal.className = "value status-normal";
-                honorSub.innerText = "สิทธิ์สมบูรณ์สะสม (GPAX >= 3.75)";
+                honorSub.innerText = "สิทธิ์บริบูรณ์ ปัญญาญาณยอดเยี่ยม (>= 3.75)";
             } else if (gpax >= 3.25) {
-                honorVal.innerText = "เกียรตินิยมอันดับ 2";
+                honorVal.innerText = "เกียรตินิยมชั้นโท (อันดับ 2)";
                 honorVal.className = "value status-probation";
-                honorSub.innerText = "สิทธิ์สมบูรณ์สะสม (GPAX 3.25 - 3.74)";
+                honorSub.innerText = "สิทธิ์บริบูรณ์ ปัญญาญาณดีเด่น (3.25 - 3.74)";
             } else {
-                honorVal.innerText = "หมดสิทธิ์";
+                honorVal.innerText = "วิถีปกติ";
                 honorVal.className = "value";
-                honorSub.innerText = "เนื่องจากเกรดเฉลี่ยต่ำกว่า 3.25";
+                honorSub.innerText = "คะแนนสะสมอยู่ต่ำกว่าเกณฑ์บารมีเกียรตินิยม";
             }
 
             // Total Progress
@@ -1445,7 +1495,7 @@
             const overallProgSub = document.getElementById("overallProgSub");
             let progressPercentage = Math.min(100, Math.round((earnedCreditsSum / 133) * 100));
             overallProgVal.innerText = `${progressPercentage}%`;
-            overallProgSub.innerText = `${earnedCreditsSum} จาก 133 หน่วยกิตตามหลักสูตร`;
+            overallProgSub.innerText = `สะสมบารมีสำเร็จแล้ว ${earnedCreditsSum} จาก 133 หน่วยกิต`;
 
             // Update Curriculum Checklist UI Elements
             updateChecklistItem("1.1", categoryCredits["1.1"], 3);
@@ -1500,32 +1550,32 @@
             if (geCredits >= 33) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-trophy text-amber"></i>
-                        <span>ยินดีด้วย! คุณเรียนผ่านเกณฑ์วิชา <strong>หมวดศึกษาทั่วไป (33 หน่วยกิต)</strong> ครบเรียบร้อยแล้ว 🎉</span>
+                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>หมวดปัญญาญาณทั่วไป (33 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🎉</span>
                     </div>
                 `;
             }
             if (coreCredits >= 27) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-trophy text-amber"></i>
-                        <span>ยินดีด้วย! คุณเรียนผ่านเกณฑ์วิชา <strong>กลุ่มวิชาแกน (27 หน่วยกิต)</strong> ครบเรียบร้อยแล้ว ✨</span>
+                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>กลุ่มวิชาแกนหลักธรรม (27 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ ✨</span>
                     </div>
                 `;
             }
             if (specCredits >= 67) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-trophy text-amber"></i>
-                        <span>ยินดีด้วย! คุณเรียนผ่านเกณฑ์วิชา <strong>กลุ่มวิชาเฉพาะ (67 หน่วยกิต)</strong> ครบเรียบร้อยแล้ว 🎓</span>
+                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>กลุ่มวิชาเฉพาะทาง (67 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🎓</span>
                     </div>
                 `;
             }
             if (freeCredits >= 6) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-trophy text-amber"></i>
-                        <span>ยินดีด้วย! คุณเรียนผ่านเกณฑ์วิชา <strong>หมวดวิชาเลือกเสรี (6 หน่วยกิต)</strong> ครบเรียบร้อยแล้ว 🚀</span>
+                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>หมวดเลือกเสรีอิสระ (6 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🚀</span>
                     </div>
                 `;
             }
@@ -1547,7 +1597,7 @@
                     <tr>
                         <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 30px;">
                             <i class="fa-solid fa-folder-open" style="font-size: 24px; margin-bottom: 8px; display: block;"></i>
-                            ไม่พบรายวิชาที่ลงทะเบียนเรียนในภาคเรียนนี้
+                            ไม่มีประวัติการจารึกวิชาเรียนในภาคเรียนนี้
                         </td>
                     </tr>
                 `;
@@ -1574,10 +1624,10 @@
                     <td><span class="cat-badge">${categoryLabel[c.category] || c.category}</span></td>
                     <td style="text-align: right;">
                         <div class="action-btns">
-                            <button class="icon-btn edit" onclick="editCourse(${actualIdx})" title="แก้ไขวิชา">
+                            <button class="icon-btn edit" onclick="editCourse(${actualIdx})" title="แก้ไขจารึก">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="icon-btn delete" onclick="deleteCourse(${actualIdx})" title="ลบวิชา">
+                            <button class="icon-btn delete" onclick="deleteCourse(${actualIdx})" title="ลบจารึก">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
@@ -1647,8 +1697,8 @@
             const ctx = document.getElementById("gpaChart").getContext("2d");
             const data = calculateTermData();
 
-            const gridColor = state.darkMode ? '#334155' : '#e2e8f0';
-            const labelColor = state.darkMode ? '#94a3b8' : '#64748b';
+            const gridColor = state.darkMode ? 'rgba(223, 188, 115, 0.15)' : '#e2e8f0';
+            const labelColor = state.darkMode ? '#E8C67D' : '#6C5A49';
 
             if (gpaChartInstance) {
                 gpaChartInstance.destroy();
@@ -1662,24 +1712,24 @@
                         {
                             label: 'GPA ประจำภาคเรียน',
                             data: data.gpa,
-                            borderColor: state.theme === 'indigo' ? '#818cf8' : 
-                                         state.theme === 'emerald' ? '#34d399' :
-                                         state.theme === 'rose' ? '#fb7185' :
-                                         state.theme === 'amber' ? '#fbbf24' : '#94a3b8',
+                            borderColor: state.theme === 'majestica' ? '#D80F7B' : 
+                                         state.theme === 'buddha-gold' ? '#DFBC73' :
+                                         state.theme === 'lotus-pink' ? '#FF7ED2' :
+                                         state.theme === 'dhamma-green' ? '#10B981' : '#B91C1C',
                             backgroundColor: 'transparent',
                             borderWidth: 2,
-                            borderDash: [5, 5],
+                            borderDash: [4, 4],
                             pointRadius: 4,
                             tension: 0.15
                         },
                         {
-                            label: 'GPAX เฉลี่ยสะสม',
+                            label: 'GPAX เฉลี่ยสะสมรวม',
                             data: data.gpax,
-                            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#4f46e5',
-                            backgroundColor: state.darkMode ? 'rgba(79, 70, 229, 0.08)' : 'rgba(79, 70, 229, 0.03)',
+                            borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#D80F7B',
+                            backgroundColor: state.darkMode ? 'rgba(216, 15, 123, 0.08)' : 'rgba(223, 188, 115, 0.03)',
                             fill: true,
-                            borderWidth: 3.5,
-                            pointRadius: 5,
+                            borderWidth: 4,
+                            pointRadius: 6,
                             pointBackgroundColor: '#ffffff',
                             tension: 0.2
                         }
@@ -1692,7 +1742,7 @@
                         legend: {
                             labels: {
                                 color: labelColor,
-                                font: { family: 'Inter, LINE Seed Sans TH, Kanit', size: 12 }
+                                font: { family: 'LINE Seed Sans TH, Kanit, Inter', size: 12 }
                             }
                         }
                     },
@@ -1738,7 +1788,7 @@
 
         // Course Modal Management
         function openAddCourseModal() {
-            document.getElementById("modalTitle").innerText = "เพิ่มรายวิชาเรียน";
+            document.getElementById("modalTitle").innerText = "จารึกรายวิชาเรียนใหม่";
             document.getElementById("courseForm").reset();
             document.getElementById("editIndex").value = "-1";
             document.getElementById("courseModal").classList.add("show");
@@ -1774,7 +1824,7 @@
 
         function editCourse(index) {
             let c = state.courses[index];
-            document.getElementById("modalTitle").innerText = "แก้ไขรายวิชาเรียน";
+            document.getElementById("modalTitle").innerText = "แก้ไขจารึกวิชาเรียน";
             document.getElementById("editIndex").value = index;
 
             document.getElementById("courseCode").value = c.code;
@@ -1788,7 +1838,7 @@
         }
 
         function deleteCourse(index) {
-            if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบรายวิชานี้ออกจากระเบียนการเรียน?")) {
+            if (confirm("ท่านแน่ใจหรือไม่ว่าต้องการลบรายวิชานี้ออกจากพระไตรปิฎกประวัติการเรียน?")) {
                 state.courses.splice(index, 1);
                 localStorage.setItem("gradway_courses", JSON.stringify(state.courses));
                 updateAllCalculations();
