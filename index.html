@@ -44,12 +44,12 @@
             --bg-card: #FFFFFF;
             --bg-card-rgb: 255, 255, 255;
             --text-main: #1A0C22;
-            --text-muted: #6C5A49;
-            --accent-gold: #92400E; /* ปรับสีทองประดับให้อ่านง่าย คมชัดสูงสุดบนพื้นหลังขาว */
-            --border-color: rgba(146, 64, 14, 0.3);
-            --shadow: 0 8px 24px rgba(146, 64, 14, 0.1);
-            --shadow-glow: 0 0 10px rgba(216, 15, 123, 0.15);
-            --highlight: #B45309; /* Darker amber gold for better contrast in light mode */
+            --text-muted: #4A3E3D; /* ปรับให้อ่านง่าย คมชัดสูงสุดบนพื้นหลังสว่าง */
+            --accent-gold: #78350F; /* ปรับสีทองประดับให้อ่านง่าย คมชัดสูงสุดบนพื้นหลังขาว */
+            --border-color: rgba(120, 53, 15, 0.25);
+            --shadow: 0 8px 24px rgba(120, 53, 15, 0.08);
+            --shadow-glow: 0 0 12px rgba(216, 15, 123, 0.12);
+            --highlight: #92400E; /* สีทองสัมฤทธิ์เข้มขึ้นเพื่อความโดดเด่นในโหมดสว่าง */
         }
 
         /* 5 Customizable Spiritual Themes from Dhamma Bhali */
@@ -140,10 +140,11 @@
         }
 
         .logo-text p {
-            font-size: 11px;
-            color: var(--accent-gold);
+            font-size: 11.5px;
+            color: var(--accent-gold); /* ปรับสีทองในโหมดสว่างให้อ่านง่าย คมชัดสูงสุด */
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            font-weight: 700; /* เพิ่มความหนาของตัวหนังสือ */
         }
 
         .controls-wrapper {
@@ -253,10 +254,6 @@
             gap: 28px;
         }
 
-        .avatar-container {
-            position: relative;
-        }
-
         .avatar {
             width: 90px;
             height: 90px;
@@ -271,6 +268,11 @@
             transition: 0.3s;
         }
 
+        body.light .avatar {
+            background-color: rgba(120, 53, 15, 0.08);
+            color: var(--primary);
+        }
+
         .profile-details h2 {
             font-size: 28px;
             font-weight: 700;
@@ -281,26 +283,33 @@
         }
 
         .profile-details p {
-            color: var(--text-muted);
+            color: var(--text-muted); /* ปรับสีข้อมูลส่วนตัวให้อ่านง่าย คมชัดสูงสุดบนโหมดสว่าง */
             font-size: 15px;
             margin-top: 6px;
+            font-weight: 600; /* เสริมความหนาตัวอักษรเพื่อความเด่นชัด */
+        }
+
+        .profile-details p span {
+            color: var(--text-main);
+            font-weight: 700;
         }
 
         .edit-profile-btn {
             background: none;
             border: none;
-            color: var(--highlight);
+            color: var(--primary); /* ใช้สีหลักที่เป็นสัจธรรมในการแสดงผลให้อ่านชัดเจน */
             cursor: pointer;
             font-size: 14px;
-            margin-top: 8px;
+            margin-top: 10px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             transition: color 0.2s, transform 0.2s;
+            font-weight: 700;
         }
 
         .edit-profile-btn:hover {
-            color: var(--primary);
+            color: var(--highlight);
             transform: translateX(4px);
         }
 
@@ -320,6 +329,10 @@
             transition: 0.3s;
         }
 
+        body.light .stat-card {
+            background-color: rgba(120, 53, 15, 0.04);
+        }
+
         .stat-card h4 {
             font-size: 13px;
             color: var(--text-muted);
@@ -332,7 +345,7 @@
         .stat-card p {
             font-size: 32px;
             font-weight: 700;
-            color: var(--highlight);
+            color: var(--primary);
             text-shadow: var(--shadow-glow);
         }
 
@@ -396,6 +409,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            font-weight: 500;
         }
 
         /* Status colors */
@@ -445,7 +459,7 @@
         }
 
         .section-title i {
-            color: var(--bright-gold);
+            color: var(--primary);
         }
 
         /* Completion Banner styled elegantly */
@@ -460,9 +474,14 @@
             gap: 14px;
             color: var(--highlight);
             font-size: 14.5px;
-            font-weight: 500;
+            font-weight: 600;
             box-shadow: var(--shadow-glow);
             animation: fadeIn 0.5s ease-out;
+        }
+
+        body.light .completion-banner {
+            color: var(--accent-gold);
+            background: linear-gradient(135deg, rgba(216, 15, 123, 0.08) 0%, rgba(120, 53, 15, 0.05) 100%);
         }
 
         @keyframes fadeIn {
@@ -542,9 +561,14 @@
             background-color: rgba(223, 188, 115, 0.12);
             color: var(--highlight);
             padding: 16px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border-bottom: 2px solid var(--accent-gold);
+        }
+
+        body.light th {
+            background-color: rgba(120, 53, 15, 0.08);
+            color: var(--accent-gold);
         }
 
         td {
@@ -561,6 +585,10 @@
         tr:hover td {
             background-color: rgba(223, 188, 115, 0.08);
             transition: background-color 0.2s;
+        }
+
+        body.light tr:hover td {
+            background-color: rgba(120, 53, 15, 0.04);
         }
 
         /* Auspicious Badges indicating grades */
@@ -593,6 +621,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: inline-block;
+            font-weight: 600;
         }
 
         .action-btns {
@@ -642,7 +671,7 @@
 
         .checklist-name {
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-main);
             display: flex;
             align-items: center;
@@ -661,6 +690,10 @@
             margin-top: 8px;
             overflow: hidden;
             border: 0.5px solid var(--border-color);
+        }
+
+        body.light .progress-bar-container {
+            background-color: rgba(120, 53, 15, 0.1);
         }
 
         .progress-bar-fill {
@@ -725,6 +758,10 @@
             font-size: 20px;
             font-weight: 700;
             color: var(--bright-gold);
+        }
+
+        body.light .modal-header h2 {
+            color: var(--primary);
         }
 
         .close-modal-btn {
@@ -795,6 +832,10 @@
             border-color: var(--accent-gold);
         }
 
+        body.light .btn-secondary:hover {
+            background-color: rgba(120, 53, 15, 0.05);
+        }
+
         /* Trend Line chart card layout */
         .chart-card {
             background-color: var(--bg-card);
@@ -830,7 +871,6 @@
     <header>
         <div class="logo-wrap">
             <div class="lotus-logo">
-                <!-- SVG Lotus blossom representation -->
                 <svg viewBox="0 0 100 100">
                     <path d="M50,12 C58,32 74,38 74,52 C74,68 58,82 50,88 C42,82 26,68 26,52 C26,38 42,32 50,12 Z M50,26 C43,38 35,48 35,58 C35,68 43,74 50,80 C57,74 65,68 65,58 C65,48 57,38 50,26 Z" />
                 </svg>
@@ -1261,6 +1301,21 @@
         </div>
     </div>
 
+    <!-- Custom Danger/Confirm Modal to strictly comply with "No Alert/Confirm" rule -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="max-width: 440px; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <i class="fa-solid fa-circle-exclamation" style="font-size: 54px; color: var(--primary);"></i>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text-main);">ยืนยันถอนจารึกวิชา</h2>
+            <p style="font-size: 15px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">ท่านแน่ใจหรือไม่ว่าต้องการลบรายวิชานี้ออกจากพระไตรปิฎกประวัติการเรียน? ข้อมูลนี้จะถูกลบถาวรจากอุปกรณ์ของท่าน</p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button type="button" class="btn-secondary" onclick="closeConfirmModal()">ยกเลิกการถอน</button>
+                <button type="button" class="btn-primary" id="confirmDeleteBtn" style="background: linear-gradient(135deg, var(--primary) 0%, #1A0C22 100%);">ยืนยันการลบ</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Application Footer -->
     <footer>
         <p>GradWay Bhali &copy; 2026 - Dhamma Bhali Design System. All Academic Progress recorded locally on your device.</p>
@@ -1306,6 +1361,7 @@
         };
 
         let gpaChartInstance = null;
+        let deleteIndexTarget = -1; // To hold the deletion index target securely
 
         // Load & Setup State
         function initApp() {
@@ -1480,11 +1536,11 @@
                 honorVal.className = "value status-retired";
                 honorSub.innerText = "พบการจารึกวิชาเรียนซ้ำซ้อนในสมุดประวัติ";
             } else if (gpax >= 3.75) {
-                honorVal.innerText = "เกียรตินิยมชั้นเอก (อันดับ 1)";
+                honorVal.innerText = "เกียรตินิยมอันดับ 1";
                 honorVal.className = "value status-normal";
                 honorSub.innerText = "สิทธิ์บริบูรณ์ ปัญญาญาณยอดเยี่ยม (>= 3.75)";
             } else if (gpax >= 3.25) {
-                honorVal.innerText = "เกียรตินิยมชั้นโท (อันดับ 2)";
+                honorVal.innerText = "เกียรตินิยมอันดับ 2";
                 honorVal.className = "value status-probation";
                 honorSub.innerText = "สิทธิ์บริบูรณ์ ปัญญาญาณดีเด่น (3.25 - 3.74)";
             } else {
@@ -1537,7 +1593,7 @@
             bar.style.width = `${percent}%`;
 
             if (current >= min) {
-                check.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i>';
+                check.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10B981;"></i>';
                 bar.classList.add("complete");
             } else {
                 check.innerHTML = '<i class="fa-solid fa-circle-notch" style="color: var(--text-muted);"></i>';
@@ -1553,7 +1609,7 @@
             if (geCredits >= 33) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size:18px;"></i>
                         <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>หมวดปัญญาญาณทั่วไป (33 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🎉</span>
                     </div>
                 `;
@@ -1561,7 +1617,7 @@
             if (coreCredits >= 27) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size:18px;"></i>
                         <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>กลุ่มวิชาแกนหลักธรรม (27 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ ✨</span>
                     </div>
                 `;
@@ -1569,7 +1625,7 @@
             if (specCredits >= 67) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size:18px;"></i>
                         <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>กลุ่มวิชาเฉพาะทาง (67 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🎓</span>
                     </div>
                 `;
@@ -1577,7 +1633,7 @@
             if (freeCredits >= 6) {
                 container.innerHTML += `
                     <div class="completion-banner">
-                        <i class="fa-solid fa-circle-check" style="color: #10b981; font-size:18px;"></i>
+                        <i class="fa-solid fa-circle-check" style="color: #10B981; font-size:18px;"></i>
                         <span>มรรคผลความรู้สำเร็จ! บำเพ็ญหน่วยกิต <strong>หมวดเลือกเสรีอิสระ (6 หน่วยกิต)</strong> ครบถ้วนบริบูรณ์ 🚀</span>
                     </div>
                 `;
@@ -1701,7 +1757,7 @@
             const data = calculateTermData();
 
             const gridColor = state.darkMode ? 'rgba(223, 188, 115, 0.15)' : '#e2e8f0';
-            const labelColor = state.darkMode ? '#E8C67D' : '#6C5A49';
+            const labelColor = state.darkMode ? '#E8C67D' : '#4A3E3D';
 
             if (gpaChartInstance) {
                 gpaChartInstance.destroy();
@@ -1840,23 +1896,39 @@
             document.getElementById("courseModal").classList.add("show");
         }
 
+        // Safe custom Modal implementation to replace standard confirm() window
         function deleteCourse(index) {
-            if (confirm("ท่านแน่ใจหรือไม่ว่าต้องการลบรายวิชานี้ออกจากพระไตรปิฎกประวัติการเรียน?")) {
-                state.courses.splice(index, 1);
+            deleteIndexTarget = index;
+            document.getElementById("confirmModal").classList.add("show");
+        }
+
+        function closeConfirmModal() {
+            document.getElementById("confirmModal").classList.remove("show");
+            deleteIndexTarget = -1;
+        }
+
+        document.getElementById("confirmDeleteBtn").onclick = function() {
+            if (deleteIndexTarget !== -1) {
+                state.courses.splice(deleteIndexTarget, 1);
                 localStorage.setItem("gradway_courses", JSON.stringify(state.courses));
                 updateAllCalculations();
             }
-        }
+            closeConfirmModal();
+        };
 
         // Window interaction click outsides
         window.onclick = function(event) {
             const profileModal = document.getElementById("profileModal");
             const courseModal = document.getElementById("courseModal");
+            const confirmModal = document.getElementById("confirmModal");
             if (event.target === profileModal) {
                 closeProfileModal();
             }
             if (event.target === courseModal) {
                 closeCourseModal();
+            }
+            if (event.target === confirmModal) {
+                closeConfirmModal();
             }
         };
 
