@@ -1,627 +1,2975 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { 
-  GraduationCap, BookOpen, AlertCircle, Award, CheckCircle2, 
-  TrendingUp, Plus, Trash2, Edit2, Moon, Sun, Palette,
-  User, Save, X, ChevronDown, ChevronUp, BarChart
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradWay 2.0</title>
 
-// --- Constants & Configuration ---
-const GRADES = {
-  'A': 4.0, 'B+': 3.5, 'B': 3.0, 'C+': 2.5, 'C': 2.0, 'D+': 1.5, 'D': 1.0, 'F': 0.0, 'W': null
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+<h1>GradWay</h1>
+
+</div>
+
+<div class="header-menu">
+
+<button id="themeBtn">
+<i class="fa-solid fa-moon"></i>
+</button>
+
+</div>
+
+</header>
+
+<section class="profile">
+
+<div class="profile-left">
+
+<div class="avatar">
+<i class="fa-solid fa-user"></i>
+</div>
+
+<div>
+
+<h2 id="studentName">นักศึกษา</h2>
+
+<p id="studentID">6600000000</p>
+
+</div>
+
+</div>
+
+<div class="profile-right">
+
+<div class="card">
+
+<h3>GPAX</h3>
+
+<h1 id="gpax">0.00</h1>
+
+</div>
+
+<div class="card">
+
+<h3>หน่วยกิต</h3>
+
+<h1 id="credit">0</h1>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="dashboard">
+
+<div class="box">
+
+<h3>สถานภาพ</h3>
+
+<h2 id="status">ปกติ</h2>
+
+</div>
+
+<div class="box">
+
+<h3>เกียรตินิยม</h3>
+
+<h2 id="honor">-</h2>
+
+</div>
+
+<div class="box">
+
+<h3>เรียนสำเร็จ</h3>
+
+<h2 id="progress">0%</h2>
+
+</div>
+
+</section>
+
+<section class="chart">
+
+<h2>
+
+<i class="fa-solid fa-chart-line"></i>
+
+แนวโน้มผลการเรียน
+
+</h2>
+
+<canvas id="gpaChart"></canvas>
+
+</section>
+
+<section class="course">
+
+<div class="course-header">
+
+<h2>
+
+<i class="fa-solid fa-book"></i>
+
+รายวิชา
+
+</h2>
+
+<button id="addBtn">
+
+<i class="fa-solid fa-plus"></i>
+
+เพิ่มรายวิชา
+
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>รหัส</th>
+
+<th>ชื่อวิชา</th>
+
+<th>หน่วยกิต</th>
+
+<th>เกรด</th>
+
+<th>จัดการ</th>
+
+</tr>
+
+</thead>
+
+<tbody id="courseTable">
+
+</tbody>
+
+</table>
+
+</section>
+
+<!-- Modal -->
+
+<div id="modal" class="modal">
+
+<div class="modal-content">
+
+<h2>เพิ่มรายวิชา</h2>
+
+<input id="code" placeholder="รหัสวิชา">
+
+<input id="name" placeholder="ชื่อวิชา">
+
+<input id="creditInput" type="number" placeholder="หน่วยกิต">
+
+<select id="grade">
+
+<option>A</option>
+<option>B+</option>
+<option>B</option>
+<option>C+</option>
+<option>C</option>
+<option>D+</option>
+<option>D</option>
+<option>F</option>
+
+</select>
+
+<div class="modal-btn">
+
+<button id="saveBtn">
+
+บันทึก
+
+</button>
+
+<button id="closeBtn">
+
+ยกเลิก
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>/* ==========================
+   GradWay 2.0
+   Style Part 1
+========================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Kanit',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#222;
+transition:.3s;
+}
+
+body.dark{
+background:#111827;
+color:white;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:white;
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+body.dark header{
+background:#1f2937;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo i{
+font-size:35px;
+color:#4F46E5;
+}
+
+.logo h1{
+font-size:30px;
+font-weight:700;
+}
+
+.header-menu button{
+width:45px;
+height:45px;
+border:none;
+border-radius:50%;
+cursor:pointer;
+font-size:18px;
+background:#eef2ff;
+color:#4F46E5;
+transition:.3s;
+}
+
+.header-menu button:hover{
+transform:scale(1.08);
+}
+
+.profile{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:40px;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.profile-left{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.avatar{
+width:90px;
+height:90px;
+border-radius:50%;
+background:#4F46E5;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+font-size:40px;
+}
+
+.profile-left h2{
+font-size:30px;
+}
+
+.profile-left p{
+color:#777;
+}
+
+.profile-right{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+min-width:180px;
+text-align:center;
+}
+
+.card h3{
+font-size:16px;
+color:#666;
+margin-bottom:10px;
+}
+
+.card h1{
+font-size:38px;
+color:#4F46E5;
+}
+
+body.dark .card{
+background:#1f2937;
+}
+
+.dashboard{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:0 40px 40px;
+}
+
+.box{
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+body.dark .box{
+background:#1f2937;
+}
+
+.box h3{
+font-size:16px;
+color:#666;
+margin-bottom:10px;
+}
+
+.box h2{
+font-size:30px;
+font-weight:700;
+}
+
+.chart{
+margin:40px;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+body.dark .chart{
+background:#1f2937;
+}
+
+.chart h2{
+margin-bottom:25px;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+}
+
+canvas{
+width:100%!important;
+height:350px!important;
+}
+
+.course{
+margin:40px;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+body.dark .course{
+background:#1f2937;
+}
+
+.course-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.course-header button{
+padding:12px 18px;
+background:#4F46E5;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:15px;
+transition:.3s;
+}
+
+.course-header button:hover{
+transform:translateY(-2px);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:#eef2ff;
+}
+
+th{
+padding:16px;
+text-align:left;
+}
+
+td{
+padding:16px;
+border-bottom:1px solid #eee;
+}
+
+body.dark td{
+border-color:#374151;
+}
+
+tbody tr:hover{
+background:#f9fafb;
+}
+
+body.dark tbody tr:hover{
+background:#374151;
+}/* ==========================
+   Style Part 2
+========================== */
+
+.modal{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-content{
+background:white;
+width:500px;
+max-width:95%;
+padding:30px;
+border-radius:20px;
+box-shadow:0 20px 60px rgba(0,0,0,.2);
+animation:popup .25s;
+}
+
+body.dark .modal-content{
+background:#1f2937;
+}
+
+@keyframes popup{
+
+from{
+
+transform:scale(.8);
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+opacity:1;
+
+}
+
+}
+
+.modal-content h2{
+
+margin-bottom:20px;
+
+}
+
+.modal-content input,
+.modal-content select{
+
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+outline:none;
+transition:.3s;
+
+}
+
+.modal-content input:focus,
+.modal-content select:focus{
+
+border-color:#4F46E5;
+
+}
+
+body.dark .modal-content input,
+body.dark .modal-content select{
+
+background:#374151;
+border:1px solid #4b5563;
+color:white;
+
+}
+
+.modal-btn{
+
+display:flex;
+justify-content:flex-end;
+gap:10px;
+margin-top:20px;
+
+}
+
+#saveBtn{
+
+background:#4F46E5;
+color:white;
+border:none;
+padding:12px 22px;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+#saveBtn:hover{
+
+background:#4338ca;
+
+}
+
+#closeBtn{
+
+background:#ef4444;
+color:white;
+border:none;
+padding:12px 22px;
+border-radius:10px;
+cursor:pointer;
+
+}
+
+#closeBtn:hover{
+
+background:#dc2626;
+
+}
+
+.delete-btn{
+
+background:#ef4444;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+background:#dc2626;
+
+}
+
+.edit-btn{
+
+background:#10b981;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+margin-right:5px;
+transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+background:#059669;
+
+}
+
+.badge{
+
+display:inline-block;
+padding:6px 12px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+
+}
+
+.badge-a{
+
+background:#dcfce7;
+color:#166534;
+
+}
+
+.badge-b{
+
+background:#dbeafe;
+color:#1e40af;
+
+}
+
+.badge-c{
+
+background:#fef3c7;
+color:#92400e;
+
+}
+
+.badge-f{
+
+background:#fee2e2;
+color:#991b1b;
+
+}
+
+.progress{
+
+width:100%;
+height:10px;
+background:#e5e7eb;
+border-radius:30px;
+overflow:hidden;
+margin-top:10px;
+
+}
+
+.progress-bar{
+
+height:100%;
+width:0%;
+background:#4F46E5;
+transition:1s;
+
+}
+
+footer{
+
+padding:40px;
+text-align:center;
+color:#888;
+font-size:14px;
+
+}
+
+body.dark footer{
+
+color:#aaa;
+
+}/* ==========================
+   Style Part 3
+========================== */
+
+/* Responsive */
+
+@media (max-width:1200px){
+
+.profile{
+
+padding:25px;
+
+}
+
+.chart,
+.course{
+
+margin:25px;
+
+}
+
+}
+
+@media (max-width:992px){
+
+header{
+
+padding:18px;
+
+}
+
+.profile{
+
+flex-direction:column;
+align-items:flex-start;
+
+}
+
+.profile-right{
+
+width:100%;
+justify-content:space-between;
+
+}
+
+.card{
+
+flex:1;
+
+}
+
+.dashboard{
+
+padding:0 20px 20px;
+
+}
+
+}
+
+@media (max-width:768px){
+
+.logo h1{
+
+font-size:24px;
+
+}
+
+.profile-left h2{
+
+font-size:24px;
+
+}
+
+.card h1{
+
+font-size:28px;
+
+}
+
+.course-header{
+
+flex-direction:column;
+align-items:flex-start;
+gap:15px;
+
+}
+
+.course-header button{
+
+width:100%;
+
+}
+
+table{
+
+display:block;
+overflow-x:auto;
+white-space:nowrap;
+
+}
+
+.chart,
+.course{
+
+margin:15px;
+
+}
+
+}
+
+@media (max-width:500px){
+
+.avatar{
+
+width:70px;
+height:70px;
+font-size:30px;
+
+}
+
+.profile{
+
+padding:15px;
+
+}
+
+.card{
+
+padding:18px;
+
+}
+
+.box{
+
+padding:18px;
+
+}
+
+.chart{
+
+padding:20px;
+
+}
+
+.course{
+
+padding:20px;
+
+}
+
+.logo h1{
+
+font-size:20px;
+
+}
+
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+
+width:8px;
+height:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#4F46E5;
+border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#ececec;
+
+}
+
+/* Animation */
+
+.fade{
+
+animation:fade .35s ease;
+
+}
+
+@keyframes fade{
+
+from{
+
+opacity:0;
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+.slide{
+
+animation:slide .4s ease;
+
+}
+
+@keyframes slide{
+
+from{
+
+transform:translateX(-20px);
+opacity:0;
+
+}
+
+to{
+
+transform:translateX(0);
+opacity:1;
+
+}
+
+}
+
+/* Hover */
+
+.card:hover,
+.box:hover,
+.chart:hover,
+.course:hover{
+
+transform:translateY(-5px);
+transition:.3s;
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+/* Buttons */
+
+button{
+
+transition:.25s;
+
+}
+
+button:active{
+
+transform:scale(.96);
+
+}
+
+/* Inputs */
+
+input,
+select{
+
+transition:.25s;
+
+}
+
+input:hover,
+select:hover{
+
+border-color:#6366f1;
+
+}
+
+/* Utility */
+
+.text-center{
+
+text-align:center;
+
+}
+
+.text-right{
+
+text-align:right;
+
+}
+
+.mt-1{
+
+margin-top:10px;
+
+}
+
+.mt-2{
+
+margin-top:20px;
+
+}
+
+.mt-3{
+
+margin-top:30px;
+
+}
+
+.mb-1{
+
+margin-bottom:10px;
+
+}
+
+.mb-2{
+
+margin-bottom:20px;
+
+}
+
+.mb-3{
+
+margin-bottom:30px;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+.flex{
+
+display:flex;
+
+}
+
+.grid{
+
+display:grid;
+
+}
+
+.w-100{
+
+width:100%;
+
+}
+
+.round{
+
+border-radius:15px;
+
+}
+
+.shadow{
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.primary{
+
+color:#4F46E5;
+
+}
+
+.success{
+
+color:#22c55e;
+
+}
+
+.warning{
+
+color:#f59e0b;
+
+}
+
+.danger{
+
+color:#ef4444;
+
+}
+
+.bg-primary{
+
+background:#4F46E5;
+color:white;
+
+}
+
+.bg-success{
+
+background:#22c55e;
+color:white;
+
+}
+
+.bg-warning{
+
+background:#f59e0b;
+color:white;
+
+}
+
+.bg-danger{
+
+background:#ef4444;
+color:white;
+
+}/* ======================================
+   GradWay 2.0
+   Style Part 4 (Final)
+====================================== */
+
+/* Status */
+
+.status-normal{
+background:#dcfce7;
+color:#166534;
+padding:8px 14px;
+border-radius:30px;
+font-weight:600;
+}
+
+.status-warning{
+background:#fef3c7;
+color:#92400e;
+padding:8px 14px;
+border-radius:30px;
+font-weight:600;
+}
+
+.status-danger{
+background:#fee2e2;
+color:#991b1b;
+padding:8px 14px;
+border-radius:30px;
+font-weight:600;
+}
+
+/* Grade */
+
+.gradeA{
+color:#22c55e;
+font-weight:bold;
+}
+
+.gradeB{
+color:#3b82f6;
+font-weight:bold;
+}
+
+.gradeC{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.gradeD{
+color:#fb923c;
+font-weight:bold;
+}
+
+.gradeF{
+color:#ef4444;
+font-weight:bold;
+}
+
+/* Card Animation */
+
+.card,
+.box,
+.chart,
+.course{
+
+transition:.35s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.box:hover{
+
+transform:translateY(-8px);
+
+}
+
+/* Modal Scroll */
+
+.modal-content{
+
+max-height:90vh;
+overflow-y:auto;
+
+}
+
+/* Table */
+
+table tbody tr{
+
+transition:.25s;
+
+}
+
+table tbody tr:hover{
+
+background:#eef2ff;
+
+}
+
+body.dark table tbody tr:hover{
+
+background:#374151;
+
+}
+
+/* Button */
+
+button{
+
+font-family:'Kanit',sans-serif;
+
+}
+
+button:hover{
+
+opacity:.95;
+
+}
+
+/* Input */
+
+input,
+select{
+
+background:white;
+
+}
+
+body.dark input,
+body.dark select{
+
+background:#374151;
+color:white;
+
+}
+
+/* Footer */
+
+footer{
+
+margin-top:60px;
+
+}
+
+/* Loading */
+
+.loader{
+
+width:40px;
+height:40px;
+border-radius:50%;
+border:4px solid #ddd;
+border-top:4px solid #4F46E5;
+animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/* Fade Up */
+
+.fade-up{
+
+animation:fadeUp .5s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
+/* Scale */
+
+.scale{
+
+animation:scale .3s ease;
+
+}
+
+@keyframes scale{
+
+from{
+
+transform:scale(.9);
+
+}
+
+to{
+
+transform:scale(1);
+
+}
+
+}
+
+/* Theme Color */
+
+:root{
+
+--primary:#4F46E5;
+--success:#22c55e;
+--warning:#f59e0b;
+--danger:#ef4444;
+--dark:#111827;
+--light:#f8fafc;
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 1
+=========================================== */
+
+const gradePoint = {
+    "A":4,
+    "B+":3.5,
+    "B":3,
+    "C+":2.5,
+    "C":2,
+    "D+":1.5,
+    "D":1,
+    "F":0
 };
 
-const THEMES = [
-  { id: 'slate', name: 'Slate', primary: 'bg-slate-800', text: 'text-slate-800', lightPrimary: 'bg-slate-100' },
-  { id: 'emerald', name: 'Emerald', primary: 'bg-emerald-600', text: 'text-emerald-600', lightPrimary: 'bg-emerald-50' },
-  { id: 'indigo', name: 'Indigo', primary: 'bg-indigo-600', text: 'text-indigo-600', lightPrimary: 'bg-indigo-50' },
-  { id: 'rose', name: 'Rose', primary: 'bg-rose-600', text: 'text-rose-600', lightPrimary: 'bg-rose-50' },
-  { id: 'amber', name: 'Amber', primary: 'bg-amber-600', text: 'text-amber-600', lightPrimary: 'bg-amber-50' },
-];
+let courses = JSON.parse(localStorage.getItem("courses")) || [];
 
-const CURRICULUM = {
-  genEd: {
-    title: 'หมวดศึกษาทั่วไป',
-    req: 33,
-    sub: {
-      'GE_TH': { title: 'ภาษาไทย', req: 3 },
-      'GE_EN': { title: 'ภาษาต่างประเทศ', req: 6 },
-      'GE_SCI': { title: 'วิทยาศาสตร์', req: 3 },
-      'GE_MATH': { title: 'คณิตศาสตร์', req: 3 },
-      'GE_SOC': { title: 'สังคมศาสตร์', req: 3 },
-      'GE_HUM': { title: 'มนุษยศาสตร์', req: 3 },
-      'GE_ELEC': { title: 'เลือกศึกษาทั่วไป', req: 12 },
+const table = document.getElementById("courseTable");
+const gpaxText = document.getElementById("gpax");
+const creditText = document.getElementById("credit");
+const progressText = document.getElementById("progress");
+const statusText = document.getElementById("status");
+const honorText = document.getElementById("honor");
+
+const modal = document.getElementById("modal");
+
+const addBtn = document.getElementById("addBtn");
+const closeBtn = document.getElementById("closeBtn");
+const saveBtn = document.getElementById("saveBtn");
+
+const codeInput = document.getElementById("code");
+const nameInput = document.getElementById("name");
+const creditInput = document.getElementById("creditInput");
+const gradeInput = document.getElementById("grade");
+
+let chart=null;
+
+/* ==========================
+   Modal
+========================== */
+
+addBtn.onclick=()=>{
+
+modal.classList.add("show");
+
+}
+
+closeBtn.onclick=()=>{
+
+modal.classList.remove("show");
+
+clearForm();
+
+}
+
+/* ==========================
+   Save
+========================== */
+
+saveBtn.onclick=()=>{
+
+let code=codeInput.value.trim();
+
+let name=nameInput.value.trim();
+
+let credit=parseFloat(creditInput.value);
+
+let grade=gradeInput.value;
+
+if(code==""||name==""){
+
+alert("กรอกข้อมูลให้ครบ");
+
+return;
+
+}
+
+courses.push({
+
+code,
+
+name,
+
+credit,
+
+grade
+
+});
+
+saveData();
+
+renderTable();
+
+calculate();
+
+drawChart();
+
+clearForm();
+
+modal.classList.remove("show");
+
+}
+
+/* ==========================
+   Clear
+========================== */
+
+function clearForm(){
+
+codeInput.value="";
+
+nameInput.value="";
+
+creditInput.value="";
+
+gradeInput.value="A";
+
+}
+
+/* ==========================
+   LocalStorage
+========================== */
+
+function saveData(){
+
+localStorage.setItem(
+
+"courses",
+
+JSON.stringify(courses)
+
+);
+
+}
+
+/* ==========================
+   Delete
+========================== */
+
+function deleteCourse(index){
+
+if(confirm("ลบรายวิชาหรือไม่ ?")){
+
+courses.splice(index,1);
+
+saveData();
+
+renderTable();
+
+calculate();
+
+drawChart();
+
+}
+
+}
+
+/* ==========================
+   Render Table
+========================== */
+
+function renderTable(){
+
+table.innerHTML="";
+
+courses.forEach((c,index)=>{
+
+let color="gradeB";
+
+if(c.grade=="A") color="gradeA";
+if(c.grade=="B+") color="gradeB";
+if(c.grade=="B") color="gradeB";
+if(c.grade=="C+") color="gradeC";
+if(c.grade=="C") color="gradeC";
+if(c.grade=="D+") color="gradeD";
+if(c.grade=="D") color="gradeD";
+if(c.grade=="F") color="gradeF";
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${c.code}</td>
+
+<td>${c.name}</td>
+
+<td>${c.credit}</td>
+
+<td class="${color}">
+${c.grade}
+</td>
+
+<td>
+
+<button class="delete-btn"
+
+onclick="deleteCourse(${index})">
+
+ลบ
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 2
+=========================================== */
+
+/* ==========================
+   Calculate GPA / GPAX
+========================== */
+
+function calculate(){
+
+let totalCredit=0;
+
+let totalPoint=0;
+
+courses.forEach(c=>{
+
+totalCredit+=Number(c.credit);
+
+totalPoint+=Number(c.credit)*gradePoint[c.grade];
+
+});
+
+let gpax=0;
+
+if(totalCredit>0){
+
+gpax=totalPoint/totalCredit;
+
+}
+
+gpaxText.innerText=gpax.toFixed(2);
+
+creditText.innerText=totalCredit;
+
+calculateProgress(totalCredit);
+
+calculateHonor(gpax,totalCredit);
+
+calculateStatus(gpax);
+
+}
+
+/* ==========================
+   Progress
+========================== */
+
+function calculateProgress(credit){
+
+const TOTAL_CREDIT=128;
+
+let percent=(credit/TOTAL_CREDIT)*100;
+
+if(percent>100){
+
+percent=100;
+
+}
+
+progressText.innerText=percent.toFixed(1)+"%";
+
+}
+
+/* ==========================
+   Honor
+========================== */
+
+function calculateHonor(gpax,credit){
+
+if(credit<30){
+
+honorText.innerText="-";
+
+return;
+
+}
+
+if(gpax>=3.75){
+
+honorText.innerText="เกียรตินิยมอันดับ 1";
+
+honorText.className="success";
+
+}
+
+else if(gpax>=3.50){
+
+honorText.innerText="เกียรตินิยมอันดับ 2";
+
+honorText.className="primary";
+
+}
+
+else{
+
+honorText.innerText="ไม่มี";
+
+honorText.className="danger";
+
+}
+
+}
+
+/* ==========================
+   Status
+========================== */
+
+function calculateStatus(gpa){
+
+if(gpa>=2){
+
+statusText.innerText="ปกติ";
+
+statusText.className="status-normal";
+
+}
+
+else if(gpa>=1.75){
+
+statusText.innerText="เฝ้าระวัง";
+
+statusText.className="status-warning";
+
+}
+
+else{
+
+statusText.innerText="พ้นสภาพ";
+
+statusText.className="status-danger";
+
+}
+
+}
+
+/* ==========================
+   Summary
+========================== */
+
+function getSummary(){
+
+let summary={
+
+course:courses.length,
+
+credit:0,
+
+gpax:0
+
+};
+
+let point=0;
+
+courses.forEach(c=>{
+
+summary.credit+=Number(c.credit);
+
+point+=Number(c.credit)*gradePoint[c.grade];
+
+});
+
+if(summary.credit>0){
+
+summary.gpax=(point/summary.credit);
+
+}
+
+return summary;
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 3
+=========================================== */
+
+/* ==========================
+   Edit Course
+========================== */
+
+let editIndex = -1;
+
+function editCourse(index){
+
+    editIndex=index;
+
+    codeInput.value=courses[index].code;
+    nameInput.value=courses[index].name;
+    creditInput.value=courses[index].credit;
+    gradeInput.value=courses[index].grade;
+
+    modal.classList.add("show");
+
+}
+
+saveBtn.onclick=()=>{
+
+    let code=codeInput.value.trim();
+    let name=nameInput.value.trim();
+    let credit=parseFloat(creditInput.value);
+    let grade=gradeInput.value;
+
+    if(code==""||name==""){
+
+        alert("กรุณากรอกข้อมูล");
+
+        return;
+
     }
-  },
-  core: { title: 'กลุ่มวิชาแกน', req: 27 },
-  specific: {
-    title: 'กลุ่มวิชาเฉพาะ',
-    req: 67,
-    sub: {
-      'SPEC_COMP': { title: 'วิชาชีพบังคับ', req: 52 },
-      'SPEC_ELEC': { title: 'วิชาชีพเลือก', req: 15 },
+
+    if(editIndex==-1){
+
+        courses.push({
+
+            code,
+            name,
+            credit,
+            grade
+
+        });
+
+    }else{
+
+        courses[editIndex]={
+
+            code,
+            name,
+            credit,
+            grade
+
+        };
+
+        editIndex=-1;
+
     }
-  },
-  free: { title: 'หมวดเลือกเสรี', req: 6 }
+
+    saveData();
+
+    renderTable();
+
+    calculate();
+
+    drawChart();
+
+    modal.classList.remove("show");
+
+    clearForm();
+
 };
 
-const CATEGORY_OPTIONS = [
-  { value: 'GE_TH', label: 'ศึกษาทั่วไป - ภาษาไทย' },
-  { value: 'GE_EN', label: 'ศึกษาทั่วไป - ภาษาต่างประเทศ' },
-  { value: 'GE_SCI', label: 'ศึกษาทั่วไป - วิทยาศาสตร์' },
-  { value: 'GE_MATH', label: 'ศึกษาทั่วไป - คณิตศาสตร์' },
-  { value: 'GE_SOC', label: 'ศึกษาทั่วไป - สังคมศาสตร์' },
-  { value: 'GE_HUM', label: 'ศึกษาทั่วไป - มนุษยศาสตร์' },
-  { value: 'GE_ELEC', label: 'ศึกษาทั่วไป - เลือกศึกษาทั่วไป' },
-  { value: 'CORE', label: 'วิชาแกน' },
-  { value: 'SPEC_COMP', label: 'วิชาเฉพาะ - วิชาชีพบังคับ' },
-  { value: 'SPEC_ELEC', label: 'วิชาเฉพาะ - วิชาชีพเลือก' },
-  { value: 'FREE', label: 'เลือกเสรี' },
-];
+/* ==========================
+   Render ใหม่
+========================== */
 
-const INITIAL_COURSES = [
-  { id: '1', term: '1/2566', code: 'TH101', name: 'การใช้ภาษาไทย', credits: 3, grade: 'A', category: 'GE_TH' },
-  { id: '2', term: '1/2566', code: 'EN101', name: 'ภาษาอังกฤษพื้นฐาน 1', credits: 3, grade: 'B+', category: 'GE_EN' },
-  { id: '3', term: '1/2566', code: 'SC101', name: 'วิทยาศาสตร์ในชีวิตประจำวัน', credits: 3, grade: 'A', category: 'GE_SCI' },
-  { id: '4', term: '1/2566', code: 'CS101', name: 'การเขียนโปรแกรม 1', credits: 3, grade: 'B', category: 'CORE' },
-  { id: '5', term: '2/2566', code: 'EN102', name: 'ภาษาอังกฤษพื้นฐาน 2', credits: 3, grade: 'A', category: 'GE_EN' },
-  { id: '6', term: '2/2566', code: 'MA101', name: 'คณิตศาสตร์เบื้องต้น', credits: 3, grade: 'C+', category: 'GE_MATH' },
-  { id: '7', term: '2/2566', code: 'CS102', name: 'การเขียนโปรแกรม 2', credits: 3, grade: 'A', category: 'CORE' },
-  { id: '8', term: '2/2566', code: 'SE201', name: 'วิศวกรรมซอฟต์แวร์', credits: 3, grade: 'A', category: 'SPEC_COMP' },
-];
+function renderTable(){
 
-const MOCK_USER = {
-  name: 'สมชาย',
-  surname: 'เรียนดี',
-  studentId: '661000001'
+table.innerHTML="";
+
+courses.forEach((c,index)=>{
+
+let color="gradeB";
+
+if(c.grade=="A") color="gradeA";
+if(c.grade=="B+") color="gradeB";
+if(c.grade=="B") color="gradeB";
+if(c.grade=="C+") color="gradeC";
+if(c.grade=="C") color="gradeC";
+if(c.grade=="D+") color="gradeD";
+if(c.grade=="D") color="gradeD";
+if(c.grade=="F") color="gradeF";
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${c.code}</td>
+
+<td>${c.name}</td>
+
+<td>${c.credit}</td>
+
+<td class="${color}">
+${c.grade}
+</td>
+
+<td>
+
+<button
+class="edit-btn"
+onclick="editCourse(${index})">
+
+แก้ไข
+
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteCourse(${index})">
+
+ลบ
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+/* ==========================
+   Search
+========================== */
+
+function searchCourse(keyword){
+
+keyword=keyword.toLowerCase();
+
+const rows=document.querySelectorAll("#courseTable tr");
+
+rows.forEach(row=>{
+
+if(row.innerText.toLowerCase().includes(keyword)){
+
+row.style.display="";
+
+}else{
+
+row.style.display="none";
+
+}
+
+});
+
+}
+
+/* ==========================
+   Sort
+========================== */
+
+function sortByName(){
+
+courses.sort((a,b)=>a.name.localeCompare(b.name));
+
+renderTable();
+
+}
+
+function sortByCode(){
+
+courses.sort((a,b)=>a.code.localeCompare(b.code));
+
+renderTable();
+
+}
+
+function sortByGrade(){
+
+courses.sort((a,b)=>
+
+gradePoint[b.grade]-gradePoint[a.grade]
+
+);
+
+renderTable();
+
+}
+
+/* ==========================
+   Draw Chart
+========================== */
+
+function drawChart(){
+
+let ctx=document.getElementById("gpaChart");
+
+if(!ctx) return;
+
+let labels=[];
+
+let values=[];
+
+courses.forEach((c,i)=>{
+
+labels.push(c.code);
+
+values.push(gradePoint[c.grade]);
+
+});
+
+if(chart){
+
+chart.destroy();
+
+}
+
+chart=new Chart(ctx,{
+
+type:"bar",
+
+data:{
+
+labels:labels,
+
+datasets:[{
+
+label:"Grade Point",
+
+data:values,
+
+borderWidth:2
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+max:4
+
+}
+
+}
+
+}
+
+});
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 4
+=========================================== */
+
+/* ==========================
+   Dark Mode
+========================== */
+
+const themeBtn=document.getElementById("themeBtn");
+
+let darkMode=
+JSON.parse(localStorage.getItem("darkMode"))||false;
+
+if(darkMode){
+
+document.body.classList.add("dark");
+
+}
+
+themeBtn.onclick=()=>{
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+
+"darkMode",
+
+JSON.stringify(
+
+document.body.classList.contains("dark")
+
+)
+
+);
+
 };
 
-export default function App() {
-  // State
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeTheme, setActiveTheme] = useState('indigo');
-  const [user, setUser] = useState(MOCK_USER);
-  const [isEditingUser, setIsEditingUser] = useState(false);
-  const [courses, setCourses] = useState(INITIAL_COURSES);
-  const [showAddCourse, setShowAddCourse] = useState(false);
-  
-  // Theme styling helpers
-  const themeObj = THEMES.find(t => t.id === activeTheme) || THEMES[0];
-  const primaryBg = themeObj.primary;
-  const primaryText = themeObj.text;
-  const lightBg = themeObj.lightPrimary;
+/* ==========================
+   Export JSON
+========================== */
 
-  // Helpers
-  const calcGPA = (courseList) => {
-    let totalPoints = 0;
-    let totalCredits = 0;
-    courseList.forEach(c => {
-      if (GRADES[c.grade] !== null && GRADES[c.grade] !== undefined) {
-        totalPoints += GRADES[c.grade] * c.credits;
-        totalCredits += c.credits;
-      }
+function exportJSON(){
+
+const data=JSON.stringify(courses,null,2);
+
+const blob=new Blob(
+
+[data],
+
+{type:"application/json"}
+
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="gradway_backup.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+/* ==========================
+   Import JSON
+========================== */
+
+function importJSON(file){
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+courses=JSON.parse(e.target.result);
+
+saveData();
+
+renderTable();
+
+calculate();
+
+drawChart();
+
+};
+
+reader.readAsText(file);
+
+}
+
+/* ==========================
+   Export CSV
+========================== */
+
+function exportCSV(){
+
+let csv="Code,Name,Credit,Grade\n";
+
+courses.forEach(c=>{
+
+csv+=`${c.code},${c.name},${c.credit},${c.grade}\n`;
+
+});
+
+const blob=new Blob(
+
+[csv],
+
+{type:"text/csv"}
+
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="courses.csv";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+/* ==========================
+   Export Excel
+========================== */
+
+function exportExcel(){
+
+exportCSV();
+
+}
+
+/* ==========================
+   Reset
+========================== */
+
+function resetData(){
+
+if(!confirm(
+
+"ลบข้อมูลทั้งหมด ?"
+
+))
+
+return;
+
+courses=[];
+
+saveData();
+
+renderTable();
+
+calculate();
+
+drawChart();
+
+}
+
+/* ==========================
+   Statistics
+========================== */
+
+function statistics(){
+
+let result={
+
+A:0,
+BP:0,
+B:0,
+CP:0,
+C:0,
+DP:0,
+D:0,
+F:0
+
+};
+
+courses.forEach(c=>{
+
+switch(c.grade){
+
+case "A":
+
+result.A++;
+
+break;
+
+case "B+":
+
+result.BP++;
+
+break;
+
+case "B":
+
+result.B++;
+
+break;
+
+case "C+":
+
+result.CP++;
+
+break;
+
+case "C":
+
+result.C++;
+
+break;
+
+case "D+":
+
+result.DP++;
+
+break;
+
+case "D":
+
+result.D++;
+
+break;
+
+case "F":
+
+result.F++;
+
+break;
+
+}
+
+});
+
+return result;
+
+}
+
+/* ==========================
+   Total Credit
+========================== */
+
+function totalCredit(){
+
+let sum=0;
+
+courses.forEach(c=>{
+
+sum+=Number(c.credit);
+
+});
+
+return sum;
+
+}
+
+/* ==========================
+   Total GPA Point
+========================== */
+
+function totalPoint(){
+
+let sum=0;
+
+courses.forEach(c=>{
+
+sum+=
+
+gradePoint[c.grade]
+
+*
+
+Number(c.credit);
+
+});
+
+return sum;
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 5
+=========================================== */
+
+/* ==========================
+   Export PDF
+========================== */
+
+function exportPDF(){
+
+    const win=window.open("","_blank");
+
+    let html=`
+    <html>
+    <head>
+    <title>GradWay Report</title>
+
+    <style>
+
+    body{
+
+        font-family:Arial;
+        padding:30px;
+
+    }
+
+    table{
+
+        width:100%;
+        border-collapse:collapse;
+
+    }
+
+    th,td{
+
+        border:1px solid #ddd;
+        padding:8px;
+
+    }
+
+    h1{
+
+        text-align:center;
+
+    }
+
+    </style>
+
+    </head>
+
+    <body>
+
+    <h1>GradWay Report</h1>
+
+    <table>
+
+    <tr>
+
+    <th>Code</th>
+    <th>Name</th>
+    <th>Credit</th>
+    <th>Grade</th>
+
+    </tr>
+
+    `;
+
+    courses.forEach(c=>{
+
+        html+=`
+
+        <tr>
+
+        <td>${c.code}</td>
+        <td>${c.name}</td>
+        <td>${c.credit}</td>
+        <td>${c.grade}</td>
+
+        </tr>
+
+        `;
+
     });
-    return totalCredits === 0 ? 0 : (totalPoints / totalCredits);
-  };
 
-  const getCredits = (courseList) => {
-    return courseList.reduce((acc, c) => acc + (GRADES[c.grade] !== null ? c.credits : 0), 0);
-  };
+    html+=`
 
-  // Derived Data
-  const gpax = calcGPA(courses);
-  const totalCreditsEarned = getCredits(courses);
-  const totalCreditsReq = 133;
+    </table>
 
-  // Academic Status
-  const studentStatus = useMemo(() => {
-    if (totalCreditsEarned < 15) return { label: 'ปกติ', color: 'text-emerald-500' }; // Grace period for freshies
-    if (gpax < 1.50) return { label: 'พ้นสภาพ (Retire)', color: 'text-rose-500' };
-    if (gpax < 2.00) return { label: 'วิทยาทัณฑ์ (Probation)', color: 'text-amber-500' };
-    return { label: 'ปกติ', color: 'text-emerald-500' };
-  }, [gpax, totalCreditsEarned]);
+    <br>
 
-  // Honors Prediction
-  const honorsPrediction = useMemo(() => {
-    const hasF = courses.some(c => c.grade === 'F');
-    // Simple check for retakes: duplicate course codes
-    const codes = courses.map(c => c.code);
-    const hasRetake = codes.length !== new Set(codes).size;
+    <h3>GPAX : ${gpaxText.innerText}</h3>
 
-    if (hasF || hasRetake) return { label: 'หมดสิทธิ์ (F/รีเกรด)', color: 'text-slate-400' };
-    if (gpax >= 3.75) return { label: 'เกียรตินิยมอันดับ 1', color: 'text-amber-500' };
-    if (gpax >= 3.25) return { label: 'เกียรตินิยมอันดับ 2', color: 'text-indigo-500' };
-    return { label: 'ไม่มี', color: 'text-slate-400' };
-  }, [gpax, courses]);
+    <h3>Credit : ${creditText.innerText}</h3>
 
-  // Group Courses by Term
-  const coursesByTerm = useMemo(() => {
-    const groups = {};
-    courses.forEach(c => {
-      if (!groups[c.term]) groups[c.term] = [];
-      groups[c.term].push(c);
-    });
-    // Sort terms
-    return Object.keys(groups).sort((a, b) => {
-      const [termA, yearA] = a.split('/');
-      const [termB, yearB] = b.split('/');
-      if (yearA !== yearB) return parseInt(yearA) - parseInt(yearB);
-      return parseInt(termA) - parseInt(termB);
-    }).map(term => ({
-      term,
-      courses: groups[term],
-      gpa: calcGPA(groups[term]),
-      credits: getCredits(groups[term])
-    }));
-  }, [courses]);
+    </body>
 
-  // Progress Calculation
-  const getProgress = (categoryKeys, requiredCredits) => {
-    const keys = Array.isArray(categoryKeys) ? categoryKeys : [categoryKeys];
-    const earned = courses
-      .filter(c => keys.includes(c.category) && c.grade !== 'F' && c.grade !== 'W')
-      .reduce((acc, c) => acc + c.credits, 0);
-    return { earned, req: requiredCredits, complete: earned >= requiredCredits };
-  };
+    </html>
 
-  // Trend Chart Logic
-  const TrendChart = () => {
-    if (coursesByTerm.length === 0) return <div className="text-sm text-gray-400">ไม่มีข้อมูลเกรด</div>;
-    const maxVal = 4.0;
-    const height = 120;
-    const width = 100; // percentage
-    const points = coursesByTerm.map((t, i) => {
-      const x = (i / (coursesByTerm.length > 1 ? coursesByTerm.length - 1 : 1)) * 100;
-      const y = height - (t.gpa / maxVal) * height;
-      return `${x},${y}`;
-    }).join(' ');
+    `;
 
-    return (
-      <div className="relative w-full h-[140px] mt-4 overflow-visible">
-        <svg viewBox={`0 -10 100 ${height + 20}`} preserveAspectRatio="none" className="w-full h-full overflow-visible">
-          <polyline
-            points={points}
-            fill="none"
-            stroke={themeObj.id === 'slate' ? '#475569' : `var(--primary-color, #4f46e5)`}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={primaryText}
-          />
-          {coursesByTerm.map((t, i) => {
-            const x = (i / (coursesByTerm.length > 1 ? coursesByTerm.length - 1 : 1)) * 100;
-            const y = height - (t.gpa / maxVal) * height;
-            return (
-              <g key={t.term}>
-                <circle cx={x} cy={y} r="3" fill="currentColor" className={`text-white dark:text-slate-800 ${primaryText} stroke-current stroke-2`} />
-                <text x={x} y={y - 10} fontSize="5" textAnchor="middle" fill="currentColor" className="text-slate-500 dark:text-slate-400 font-medium">
-                  {t.gpa.toFixed(2)}
-                </text>
-                <text x={x} y={height + 15} fontSize="4" textAnchor="middle" fill="currentColor" className="text-slate-400 dark:text-slate-500">
-                  {t.term}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-    );
-  };
+    win.document.write(html);
 
-  // Add/Edit Course Form
-  const CourseForm = ({ initialData, onSave, onCancel }) => {
-    const [formData, setFormData] = useState(initialData || {
-      term: '1/2567', code: '', name: '', credits: 3, grade: 'A', category: 'GE_TH'
-    });
+    win.print();
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      onSave({ ...formData, id: formData.id || Date.now().toString(), credits: Number(formData.credits) });
+}
+
+/* ==========================
+   Target GPA
+========================== */
+
+function targetGPA(target,totalCredit,nextCredit){
+
+    let currentPoint=
+
+    totalPoint();
+
+    let need=
+
+    (target*(totalCredit+nextCredit))
+
+    -
+
+    currentPoint;
+
+    return(
+
+        need/
+
+        nextCredit
+
+    ).toFixed(2);
+
+}
+
+/* ==========================
+   Honor Detail
+========================== */
+
+function honorDetail(){
+
+    let gp=parseFloat(gpaxText.innerText);
+
+    if(gp>=3.75){
+
+        return "เกียรตินิยมอันดับ 1";
+
+    }
+
+    if(gp>=3.50){
+
+        return "เกียรตินิยมอันดับ 2";
+
+    }
+
+    if(gp>=3.25){
+
+        return "มีโอกาสได้รับ";
+
+    }
+
+    return "ไม่มี";
+
+}
+
+/* ==========================
+   Credit Remaining
+========================== */
+
+function remainingCredit(){
+
+    const TOTAL=128;
+
+    return TOTAL-totalCredit();
+
+}
+
+/* ==========================
+   Auto Save
+========================== */
+
+setInterval(()=>{
+
+saveData();
+
+},30000);
+
+/* ==========================
+   Backup
+========================== */
+
+function backup(){
+
+localStorage.setItem(
+
+"backup",
+
+JSON.stringify(courses)
+
+);
+
+}
+
+/* ==========================
+   Restore
+========================== */
+
+function restore(){
+
+let data=
+
+localStorage.getItem("backup");
+
+if(data){
+
+courses=
+
+JSON.parse(data);
+
+renderTable();
+
+calculate();
+
+drawChart();
+
+}
+
+}
+
+/* ==========================
+   Notification
+========================== */
+
+function notify(text){
+
+const div=document.createElement("div");
+
+div.innerText=text;
+
+div.style.position="fixed";
+
+div.style.bottom="20px";
+
+div.style.right="20px";
+
+div.style.padding="15px";
+
+div.style.background="#4F46E5";
+
+div.style.color="white";
+
+div.style.borderRadius="10px";
+
+div.style.zIndex="9999";
+
+document.body.appendChild(div);
+
+setTimeout(()=>{
+
+div.remove();
+
+},2500);
+
+}/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 6
+=========================================== */
+
+/* ==========================
+   Dashboard Statistics
+========================== */
+
+function updateDashboard(){
+
+    const stat = statistics();
+
+    console.table(stat);
+
+    document.getElementById("gpax").innerText =
+        parseFloat(gpaxText.innerText).toFixed(2);
+
+    document.getElementById("credit").innerText =
+        totalCredit();
+
+}
+
+/* ==========================
+   Grade Summary
+========================== */
+
+function gradeSummary(){
+
+    const s = statistics();
+
+    return {
+
+        total:courses.length,
+
+        A:s.A,
+
+        BP:s.BP,
+
+        B:s.B,
+
+        CP:s.CP,
+
+        C:s.C,
+
+        DP:s.DP,
+
+        D:s.D,
+
+        F:s.F
+
     };
 
-    return (
-      <form onSubmit={handleSubmit} className={`p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 space-y-4 mb-4`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3">
-          <div className="lg:col-span-1">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">เทอม (เช่น 1/2567)</label>
-            <input required type="text" value={formData.term} onChange={e => setFormData({...formData, term: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
-          </div>
-          <div className="lg:col-span-1">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">รหัสวิชา</label>
-            <input required type="text" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
-          </div>
-          <div className="lg:col-span-2">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">ชื่อวิชา</label>
-            <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
-          </div>
-          <div className="lg:col-span-1">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">หน่วยกิต</label>
-            <input required type="number" min="0" max="10" value={formData.credits} onChange={e => setFormData({...formData, credits: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" />
-          </div>
-          <div className="lg:col-span-1">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">เกรด</label>
-            <select value={formData.grade} onChange={e => setFormData({...formData, grade: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-              {Object.keys(GRADES).map(g => <option key={g} value={g}>{g}</option>)}
-            </select>
-          </div>
-          <div className="lg:col-span-6">
-            <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">หมวดหมู่</label>
-            <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full text-sm p-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
-              {CATEGORY_OPTIONS.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-            </select>
-          </div>
-        </div>
-        <div className="flex justify-end gap-2 mt-4">
-          <button type="button" onClick={onCancel} className="px-4 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">ยกเลิก</button>
-          <button type="submit" className={`px-4 py-2 text-sm rounded-lg text-white ${primaryBg} hover:opacity-90 transition-opacity flex items-center gap-2`}>
-            <Save size={16} /> บันทึก
-          </button>
-        </div>
-      </form>
-    );
-  };
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-  // Inject styles for fonts
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-      @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
-      
-      body {
-        font-family: 'Inter', 'Kanit', sans-serif;
-        background-color: ${isDarkMode ? '#0f172a' : '#f8fafc'};
-        color: ${isDarkMode ? '#f1f5f9' : '#0f172a'};
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, [isDarkMode]);
-
-  return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark' : ''} bg-slate-50 dark:bg-slate-900 transition-colors duration-300`}>
-      {/* Navbar / Header */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700/50">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl ${primaryBg} text-white flex items-center justify-center shadow-lg shadow-${themeObj.id}-500/30`}>
-              <GraduationCap size={24} />
-            </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-white">GradWay<span className={primaryText}>.</span></h1>
-          </div>
-
-          <div className="flex items-center gap-4">
-            {/* Theme Selector */}
-            <div className="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-700/50 p-1 rounded-full">
-              {THEMES.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTheme(t.id)}
-                  className={`w-6 h-6 rounded-full transition-all ${t.id === activeTheme ? 'ring-2 ring-offset-2 ring-slate-400 dark:ring-slate-500 scale-110' : 'opacity-70 hover:opacity-100'}`}
-                  style={{ backgroundColor: t.id === 'slate' ? '#475569' : t.id === 'emerald' ? '#10b981' : t.id === 'indigo' ? '#6366f1' : t.id === 'rose' ? '#f43f5e' : '#f59e0b' }}
-                  title={t.name}
-                />
-              ))}
-            </div>
-
-            {/* Dark Mode Toggle */}
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
-        
-        {/* User Profile Banner */}
-        <section className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 dark:border-slate-700/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
-          <div className={`absolute right-0 top-0 w-64 h-64 bg-gradient-to-br from-transparent to-${themeObj.id}-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none`}></div>
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400">
-              <User size={40} />
-            </div>
-            {isEditingUser ? (
-              <div className="flex flex-col gap-2">
-                <input type="text" value={user.studentId} onChange={e => setUser({...user, studentId: e.target.value})} className="px-3 py-1 text-sm rounded border dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="รหัสนักศึกษา" />
-                <div className="flex gap-2">
-                  <input type="text" value={user.name} onChange={e => setUser({...user, name: e.target.value})} className="px-3 py-1 text-sm rounded border dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="ชื่อ" />
-                  <input type="text" value={user.surname} onChange={e => setUser({...user, surname: e.target.value})} className="px-3 py-1 text-sm rounded border dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="นามสกุล" />
-                </div>
-                <button onClick={() => setIsEditingUser(false)} className={`text-sm mt-2 w-fit px-4 py-1 rounded-full ${primaryBg} text-white`}>บันทึก</button>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">รหัสนักศึกษา {user.studentId}</p>
-                <h2 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                  {user.name} {user.surname}
-                  <button onClick={() => setIsEditingUser(true)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><Edit2 size={16} /></button>
-                </h2>
-                <div className="mt-2 flex gap-3">
-                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${studentStatus.label === 'ปกติ' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400'}`}>
-                    <AlertCircle size={14} /> สถานภาพ: {studentStatus.label}
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <div className="w-full md:w-auto grid grid-cols-2 gap-4">
-            <div className="text-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600/50">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">เกรดเฉลี่ยสะสม (GPAX)</p>
-              <p className={`text-3xl font-bold ${primaryText}`}>{gpax.toFixed(2)}</p>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-600/50">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">หน่วยกิตสะสม</p>
-              <p className="text-3xl font-bold text-slate-800 dark:text-white">{totalCreditsEarned}<span className="text-base text-slate-400 font-normal">/{totalCreditsReq}</span></p>
-            </div>
-          </div>
-        </section>
-
-        {}
-        {/* KPI Dashboard */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/50">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
-                <TrendingUp size={18} className={primaryText} /> แนวโน้มการศึกษา
-              </h3>
-            </div>
-            <TrendChart />
-          </div>
-
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/50">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
-                <Award size={18} className="text-amber-500" /> การคาดการณ์เกียรตินิยม
-              </h3>
-            </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">อ้างอิงจากผลการเรียนปัจจุบัน</p>
-            <div className={`p-4 rounded-2xl flex items-center justify-center text-lg font-bold border ${honorsPrediction.label === 'เกียรตินิยมอันดับ 1' ? 'bg-amber-50 border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/30' : honorsPrediction.label === 'เกียรตินิยมอันดับ 2' ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/30' : 'bg-slate-50 border-slate-200 text-slate-500 dark:bg-slate-700/50 dark:border-slate-600'}`}>
-              {honorsPrediction.label}
-            </div>
-            <div className="mt-4 space-y-2 text-xs text-slate-500 dark:text-slate-400">
-              <p className="flex justify-between"><span>GPA สะสม {'>='} 3.75</span> <span>อันดับ 1</span></p>
-              <p className="flex justify-between"><span>GPA สะสม {'>='} 3.25</span> <span>อันดับ 2</span></p>
-              <p className="text-rose-500 dark:text-rose-400 mt-2">*เงื่อนไข: ไม่เคยติด F, ไม่เคยรีเกรด</p>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700/50 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-slate-800 dark:text-white flex items-center gap-2">
-                  <CheckCircle2 size={18} className="text-emerald-500" /> ความคืบหน้าหลักสูตร
-                </h3>
-              </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">ภาพรวมหน่วยกิตที่เรียนผ่านแล้ว</p>
-            </div>
-            
-            <div className="relative pt-6">
-              <div className="flex justify-between items-end mb-2">
-                <span className="text-3xl font-bold text-slate-800 dark:text-white">{Math.min(100, Math.round((totalCreditsEarned/totalCreditsReq)*100))}%</span>
-                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">สำเร็จแล้ว</span>
-              </div>
-              <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
-                <div className={`h-3 rounded-full ${primaryBg} transition-all duration-1000`} style={{ width: `${Math.min(100, (totalCreditsEarned/totalCreditsReq)*100)}%` }}></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {}
-        {/* Curriculum Checklist */}
-        <section className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 dark:border-slate-700/50">
-          <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
-            <BookOpen size={20} className={primaryText} /> โครงสร้างหลักสูตร (133 หน่วยกิต)
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {/* GenEd */}
-            <div className="space-y-4">
-              <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
-                <h3 className="font-semibold text-slate-800 dark:text-white">{CURRICULUM.genEd.title}</h3>
-                <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                  {getProgress(['GE_TH','GE_EN','GE_SCI','GE_MATH','GE_SOC','GE_HUM','GE_ELEC'], 33).earned} / 33
-                </span>
-              </div>
-              {Object.entries(CURRICULUM.genEd.sub).map(([key, val]) => {
-                const prog = getProgress(key, val.req);
-                return (
-                  <div key={key} className="flex flex-col gap-1.5">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-600 dark:text-slate-300 flex items-center gap-2">
-                        {prog.complete ? <CheckCircle2 size={14} className="text-emerald-500" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600" />}
-                        {val.title}
-                      </span>
-                      <span className="text-slate-500 dark:text-slate-400 text-xs">{prog.earned}/{val.req}</span>
-                    </div>
-                    <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
-                      <div className={`h-1.5 rounded-full ${prog.complete ? 'bg-emerald-500' : primaryBg}`} style={{ width: `${Math.min(100, (prog.earned/val.req)*100)}%` }}></div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* Others */}
-            <div className="space-y-6">
-              {/* Core */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
-                  <h3 className="font-semibold text-slate-800 dark:text-white">{CURRICULUM.core.title}</h3>
-                  <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                    {getProgress('CORE', 27).earned} / 27
-                  </span>
-                </div>
-                {(() => {
-                  const prog = getProgress('CORE', 27);
-                  return (
-                    <div className="flex flex-col gap-1.5">
-                      <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5 mt-2">
-                        <div className={`h-1.5 rounded-full ${prog.complete ? 'bg-emerald-500' : primaryBg}`} style={{ width: `${Math.min(100, (prog.earned/27)*100)}%` }}></div>
-                      </div>
-                    </div>
-                  )
-                })()}
-              </div>
-
-              {/* Specific */}
-              <div className="space-y-4">
-                <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
-                  <h3 className="font-semibold text-slate-800 dark:text-white">{CURRICULUM.specific.title}</h3>
-                  <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                    {getProgress(['SPEC_COMP', 'SPEC_ELEC'], 67).earned} / 67
-                  </span>
-                </div>
-                {Object.entries(CURRICULUM.specific.sub).map(([key, val]) => {
-                  const prog = getProgress(key, val.req);
-                  return (
-                    <div key={key} className="flex flex-col gap-1.5">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-slate-600 dark:text-slate-300 flex items-center gap-2">
-                          {prog.complete ? <CheckCircle2 size={14} className="text-emerald-500" /> : <div className="w-3.5 h-3.5 rounded-full border border-slate-300 dark:border-slate-600" />}
-                          {val.title}
-                        </span>
-                        <span className="text-slate-500 dark:text-slate-400 text-xs">{prog.earned}/{val.req}</span>
-                      </div>
-                      <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
-                        <div className={`h-1.5 rounded-full ${prog.complete ? 'bg-emerald-500' : primaryBg}`} style={{ width: `${Math.min(100, (prog.earned/val.req)*100)}%` }}></div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Free Elective */}
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
-                  <h3 className="font-semibold text-slate-800 dark:text-white">{CURRICULUM.free.title}</h3>
-                  <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                    {getProgress('FREE', 6).earned} / 6
-                  </span>
-                </div>
-                {(() => {
-                  const prog = getProgress('FREE', 6);
-                  return (
-                    <div className="flex flex-col gap-1.5">
-                      <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5 mt-2">
-                        <div className={`h-1.5 rounded-full ${prog.complete ? 'bg-emerald-500' : primaryBg}`} style={{ width: `${Math.min(100, (prog.earned/6)*100)}%` }}></div>
-                      </div>
-                    </div>
-                  )
-                })()}
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {}
-        {/* Course List & Management */}
-        <section className="bg-white dark:bg-slate-800 rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 dark:border-slate-700/50">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
-              <BarChart size={20} className={primaryText} /> ผลการเรียนรายเทอม
-            </h2>
-            <button 
-              onClick={() => setShowAddCourse(!showAddCourse)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium text-white ${primaryBg} hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm`}
-            >
-              {showAddCourse ? <X size={16} /> : <Plus size={16} />} 
-              {showAddCourse ? 'ปิด' : 'เพิ่มรายวิชา'}
-            </button>
-          </div>
-
-          {showAddCourse && (
-            <CourseForm 
-              onSave={(data) => {
-                setCourses([...courses, data]);
-                setShowAddCourse(false);
-              }}
-              onCancel={() => setShowAddCourse(false)}
-            />
-          )}
-
-          <div className="space-y-6">
-            {coursesByTerm.length === 0 ? (
-              <div className="text-center py-10 text-slate-400 dark:text-slate-500">
-                ยังไม่มีข้อมูลรายวิชา คลิก "เพิ่มรายวิชา" เพื่อเริ่มต้น
-              </div>
-            ) : (
-              coursesByTerm.map(termGroup => (
-                <div key={termGroup.term} className="border border-slate-100 dark:border-slate-700/80 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-800/30">
-                  <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700/80 flex flex-wrap justify-between items-center bg-slate-50 dark:bg-slate-800">
-                    <h3 className="font-bold text-slate-800 dark:text-white">ภาคการศึกษา {termGroup.term}</h3>
-                    <div className="flex gap-4 text-sm font-medium">
-                      <span className="text-slate-500 dark:text-slate-400">หน่วยกิต: {termGroup.credits}</span>
-                      <span className={primaryText}>GPA: {termGroup.gpa.toFixed(2)}</span>
-                    </div>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm whitespace-nowrap">
-                      <thead className="bg-transparent text-slate-500 dark:text-slate-400">
-                        <tr>
-                          <th className="px-5 py-3 font-medium">รหัสวิชา</th>
-                          <th className="px-5 py-3 font-medium">ชื่อวิชา</th>
-                          <th className="px-5 py-3 font-medium text-center">หน่วยกิต</th>
-                          <th className="px-5 py-3 font-medium text-center">เกรด</th>
-                          <th className="px-5 py-3 font-medium text-right">จัดการ</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 dark:divide-slate-700/50">
-                        {termGroup.courses.map(course => (
-                          <tr key={course.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors group">
-                            <td className="px-5 py-3 text-slate-800 dark:text-slate-200 font-medium">{course.code}</td>
-                            <td className="px-5 py-3 text-slate-600 dark:text-slate-300">
-                              {course.name}
-                              <span className="block text-xs text-slate-400 mt-0.5">
-                                {CATEGORY_OPTIONS.find(c => c.value === course.category)?.label || course.category}
-                              </span>
-                            </td>
-                            <td className="px-5 py-3 text-center text-slate-600 dark:text-slate-300">{course.credits}</td>
-                            <td className="px-5 py-3 text-center">
-                              <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-xs ${course.grade === 'A' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400' : course.grade === 'F' ? 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}`}>
-                                {course.grade}
-                              </span>
-                            </td>
-                            <td className="px-5 py-3 text-right">
-                              <button 
-                                onClick={() => setCourses(courses.filter(c => c.id !== course.id))}
-                                className="text-slate-400 hover:text-rose-500 transition-colors p-2 opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                title="ลบรายวิชา"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
-
-      </main>
-      
-      {/* Footer */}
-      <footer className="text-center pb-8 pt-4 text-sm text-slate-400 dark:text-slate-500">
-        GradWay — Minimal Degree Tracker Planner
-      </footer>
-    </div>
-  );
 }
+
+/* ==========================
+   GPA Trend
+========================== */
+
+function gpaTrend(){
+
+    let trend=[];
+
+    let point=0;
+
+    let credit=0;
+
+    courses.forEach(c=>{
+
+        credit+=Number(c.credit);
+
+        point+=
+
+        Number(c.credit)
+
+        *
+
+        gradePoint[c.grade];
+
+        trend.push(
+
+            Number(
+
+                (point/credit).toFixed(2)
+
+            )
+
+        );
+
+    });
+
+    return trend;
+
+}
+
+/* ==========================
+   Validate Course
+========================== */
+
+function validateCourses(){
+
+    let error=[];
+
+    courses.forEach((c,index)=>{
+
+        if(!c.code){
+
+            error.push(
+
+                "แถว "+(index+1)+" ไม่มีรหัสวิชา"
+
+            );
+
+        }
+
+        if(!c.name){
+
+            error.push(
+
+                "แถว "+(index+1)+" ไม่มีชื่อวิชา"
+
+            );
+
+        }
+
+        if(isNaN(c.credit)){
+
+            error.push(
+
+                "แถว "+(index+1)+" หน่วยกิตผิด"
+
+            );
+
+        }
+
+        if(
+
+            gradePoint[c.grade]==undefined
+
+        ){
+
+            error.push(
+
+                "แถว "+(index+1)+" เกรดผิด"
+
+            );
+
+        }
+
+    });
+
+    return error;
+
+}
+
+/* ==========================
+   Notification Summary
+========================== */
+
+function dashboardNotify(){
+
+    let gp=parseFloat(
+
+        gpaxText.innerText
+
+    );
+
+    if(gp>=3.50){
+
+        notify(
+
+            "🎉 ยินดีด้วย คุณมีโอกาสได้รับเกียรตินิยม"
+
+        );
+
+    }
+
+    else if(gp<2){
+
+        notify(
+
+            "⚠️ GPAX ต่ำกว่าเกณฑ์"
+
+        );
+
+    }
+
+}
+
+/* ==========================
+   Refresh Dashboard
+========================== */
+
+function refreshDashboard(){
+
+    renderTable();
+
+    calculate();
+
+    drawChart();
+
+    updateDashboard();
+
+}
+
+/* ==========================
+   Initial Load
+========================== */
+
+window.addEventListener("load",()=>{
+
+    renderTable();
+
+    calculate();
+
+    drawChart();
+
+    updateDashboard();
+
+    dashboardNotify();
+
+});
+
+/* ==========================
+   Keyboard Shortcut
+========================== */
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.ctrlKey && e.key==="n"){
+
+        e.preventDefault();
+
+        modal.classList.add("show");
+
+    }
+
+    if(e.key==="Escape"){
+
+        modal.classList.remove("show");
+
+    }
+
+});
+
+/* ==========================
+   Auto Refresh
+========================== */
+
+setInterval(()=>{
+
+    updateDashboard();
+
+},10000);/* ===========================================
+   GradWay 2.0
+   script.js
+   Part 7 (Final)
+=========================================== */
+
+/* ==========================
+   Version
+========================== */
+
+const APP_NAME = "GradWay";
+const APP_VERSION = "2.0.0";
+
+console.log(`${APP_NAME} v${APP_VERSION}`);
+
+/* ==========================
+   Welcome
+========================== */
+
+function welcome(){
+
+    console.log("Welcome to GradWay");
+
+}
+
+/* ==========================
+   Initialize
+========================== */
+
+function initialize(){
+
+    renderTable();
+
+    calculate();
+
+    drawChart();
+
+    updateDashboard();
+
+    welcome();
+
+}
+
+initialize();
+
+/* ==========================
+   Service Worker
+========================== */
+
+if("serviceWorker" in navigator){
+
+window.addEventListener("load",()=>{
+
+navigator.serviceWorker.register("sw.js")
+
+.then(()=>{
+
+console.log("Service Worker Registered");
+
+})
+
+.catch(()=>{
+
+console.log("Service Worker Error");
+
+});
+
+});
+
+}
+
+/* ==========================
+   Online / Offline
+========================== */
+
+window.addEventListener("online",()=>{
+
+notify("🌐 กลับมาออนไลน์แล้ว");
+
+});
+
+window.addEventListener("offline",()=>{
+
+notify("📴 ไม่มีอินเทอร์เน็ต");
+
+});
+
+/* ==========================
+   Before Unload
+========================== */
+
+window.addEventListener("beforeunload",()=>{
+
+saveData();
+
+});
+
+/* ==========================
+   Auto Backup
+========================== */
+
+setInterval(()=>{
+
+backup();
+
+console.log("Backup Complete");
+
+},60000);
+
+/* ==========================
+   Restore Backup
+========================== */
+
+window.addEventListener("load",()=>{
+
+restore();
+
+});
+
+/* ==========================
+   Empty State
+========================== */
+
+if(courses.length===0){
+
+console.log("No Course");
+
+}
+
+/* ==========================
+   Performance
+========================== */
+
+console.time("GradWay");
+
+window.addEventListener("load",()=>{
+
+console.timeEnd("GradWay");
+
+});
+
+/* ==========================
+   Footer
+========================== */
+
+console.log("--------------------------------");
+console.log(" GradWay 2.0");
+console.log(" GPA / GPAX Calculator");
+console.log(" HTML CSS JavaScript");
+console.log("--------------------------------");
