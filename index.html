@@ -15,9 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* ==========================================================================
-           GradWay Academic Design System - Theme Setup (Optimized for iPhone 17 Pro)
-           ========================================================================== */
         :root {
             /* Theme 1: Original Deep Purple & Golden Premium (Default Dark) */
             --primary: #D80F7B;
@@ -38,21 +35,19 @@
             --highlight: #FCD16C;
         }
 
-        /* Dark / Light Variations with improved readability */
         body.light {
             --bg-body: #FAF8F5;
             --bg-card: #FFFFFF;
             --bg-card-rgb: 255, 255, 255;
             --text-main: #1E1B18;
             --text-muted: #4B3E3C;
-            --accent-gold: #854D0E; /* Dark gold for maximum contrast */
+            --accent-gold: #854D0E; 
             --border-color: rgba(133, 77, 14, 0.25);
             --shadow: 0 8px 24px rgba(133, 77, 14, 0.08);
             --shadow-glow: 0 0 12px rgba(216, 15, 123, 0.12);
             --highlight: #9A3412;
         }
 
-        /* 5 Customizable Academic Colors Themes */
         [data-theme="majestica"] {
             --primary: #D80F7B;
             --accent-gold: #DFBC73;
@@ -92,7 +87,6 @@
             overflow: hidden;
         }
 
-        /* Native iOS App Wrapper Mockup on Desktop */
         .app-viewport {
             width: 100%;
             height: 100vh;
@@ -107,7 +101,7 @@
 
         @media (min-width: 640px) {
             .app-viewport {
-                max-width: 430px; /* Standard iPhone 17 Pro Max viewport scale */
+                max-width: 430px; 
                 height: 92vh;
                 border-radius: 44px;
                 border: 12px solid #1c1524;
@@ -116,7 +110,6 @@
             }
         }
 
-        /* Compact Header Layout styling */
         header {
             display: flex;
             justify-content: space-between;
@@ -169,16 +162,14 @@
             font-weight: 700;
         }
 
-        /* Screen Contents Area */
         .app-content {
             flex-grow: 1;
             overflow-y: auto;
             padding: 16px;
-            padding-bottom: 100px; /* Safe area space for Bottom Tab Bar */
+            padding-bottom: 100px; 
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Custom Native Floating iOS Bottom Tab Bar */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -225,7 +216,6 @@
             transform: scale(0.9);
         }
 
-        /* Profile Banner Card */
         .profile-section {
             background: linear-gradient(135deg, var(--bg-card) 0%, rgba(var(--bg-card-rgb), 0.9) 100%);
             border-radius: var(--radius-md);
@@ -334,7 +324,6 @@
             color: var(--primary);
         }
 
-        /* Metric cards screen list style */
         .metric-card-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -392,12 +381,10 @@
             font-weight: 500;
         }
 
-        /* Status indicators */
         .status-normal { color: #10B981 !important; }
         .status-probation { color: #F59E0B !important; }
         .status-retired { color: #EF4444 !important; }
 
-        /* General Section Card Wrapper */
         .section-card {
             background-color: var(--bg-card);
             border-radius: var(--radius-sm);
@@ -428,7 +415,6 @@
             color: var(--primary);
         }
 
-        /* Completion notifications styled beautifully */
         .completion-banner {
             background: linear-gradient(135deg, rgba(216, 15, 123, 0.1) 0%, rgba(252, 209, 108, 0.04) 100%);
             border: 1px solid var(--accent-gold);
@@ -449,7 +435,6 @@
             background: linear-gradient(135deg, rgba(216, 15, 123, 0.04) 0%, rgba(133, 77, 14, 0.02) 100%);
         }
 
-        /* Scrollable Segment Year Tab Selector (Perfect mobile experience) */
         .year-scroll-wrapper {
             overflow-x: auto;
             white-space: nowrap;
@@ -488,7 +473,6 @@
             box-shadow: var(--shadow-glow);
         }
 
-        /* Semester Pills filter layout */
         .semester-pill-container {
             display: flex;
             gap: 4px;
@@ -518,7 +502,6 @@
             background-color: rgba(var(--bg-card-rgb), 0.8);
         }
 
-        /* Minimalist Mobile List Rows */
         .course-card-list {
             display: flex;
             flex-direction: column;
@@ -575,7 +558,6 @@
             flex-shrink: 0;
         }
 
-        /* Action Buttons for courses */
         .item-action-btn {
             background: none;
             border: none;
@@ -593,7 +575,6 @@
             color: #ef4444;
         }
 
-        /* Button configurations (Style Guide Capsule Pill) */
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, #161020 100%);
             color: #ffffff;
@@ -618,7 +599,6 @@
             transform: scale(0.95);
         }
 
-        /* Checklist structural indicators */
         .checklist-item {
             display: flex;
             justify-content: space-between;
@@ -665,7 +645,6 @@
             background: linear-gradient(to right, #10B981, var(--bright-gold));
         }
 
-        /* Custom Theme Dot Selectors for config screen */
         .theme-dot-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -678,7 +657,21 @@
             margin-top: 8px;
         }
 
-        /* Floating App Modals Style */
+        .theme-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.25s;
+        }
+
+        .theme-dot.theme-majestica { background-color: #D80F7B; }
+        .theme-dot.theme-buddha-gold { background-color: #DFBC73; }
+        .theme-dot.theme-lotus-pink { background-color: #FF7ED2; }
+        .theme-dot.theme-dhamma-green { background-color: #10B981; }
+        .theme-dot.theme-siam-ruby { background-color: #B91C1C; }
+
         .modal {
             position: absolute;
             top: 0;
@@ -783,14 +776,12 @@
             font-size: 12px;
         }
 
-        /* Line chart viewport */
         .chart-container {
             position: relative;
             height: 180px;
             width: 100%;
         }
 
-        /* Badges for courses */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -812,7 +803,6 @@
 </head>
 <body>
 
-    <!-- SCREEN TEMPLATE VIEWPORT (Simulating Native Smartphone) -->
     <div class="app-viewport">
 
         <!-- App Header (Branding Logo) -->
@@ -1077,21 +1067,21 @@
             <div id="screen-profile" class="screen-view" style="display: none;">
                 <!-- Profile details editor section -->
                 <div class="section-card">
-                    <div class="section-title">
-                        <div>
-                            <i class="fa-solid fa-user-gear"></i>
-                            ข้อมูลและบัญชีผู้เรียน
+                    <div class="section-card">
+                        <div class="section-title">
+                            <div>
+                                <i class="fa-solid fa-user-gear"></i>
+                                ข้อมูลและบัญชีผู้เรียน
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button class="btn-primary" onclick="openProfileModal()" style="justify-content: center; width: 100%;">
+                                <i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูลนักศึกษา
+                            </button>
                         </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <button class="btn-primary" onclick="openProfileModal()" style="justify-content: center; width: 100%;">
-                            <i class="fa-solid fa-user-pen"></i> แก้ไขข้อมูลนักศึกษา
-                        </button>
-                    </div>
-                </div>
 
-                <!-- Aesthetic settings section -->
-                <div class="section-card">
+                    <!-- Aesthetic settings section -->
                     <div class="section-title">
                         <div>
                             <i class="fa-solid fa-palette"></i>
@@ -1106,13 +1096,13 @@
                         </button>
                     </div>
 
-                    <p style="font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">เลือกสีสัจธรรมความก้าวหน้า</p>
+                    <p style="font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">เลือกสีธีมหน้าตาแอปพลิเคชัน</p>
                     <div class="theme-dot-grid">
-                        <span class="theme-dot theme-majestica" onclick="setTheme('majestica')" style="width:20px; height:20px; border-radius:50%; cursor:pointer;" title="Majestica"></span>
-                        <span class="theme-dot theme-buddha-gold" onclick="setTheme('buddha-gold')" style="width:20px; height:20px; border-radius:50%; cursor:pointer;" title="Golden"></span>
-                        <span class="theme-dot theme-lotus-pink" onclick="setTheme('lotus-pink')" style="width:20px; height:20px; border-radius:50%; cursor:pointer;" title="Lotus Pink"></span>
-                        <span class="theme-dot theme-dhamma-green" onclick="setTheme('dhamma-green')" style="width:20px; height:20px; border-radius:50%; cursor:pointer;" title="Green"></span>
-                        <span class="theme-dot theme-siam-ruby" onclick="setTheme('siam-ruby')" style="width:20px; height:20px; border-radius:50%; cursor:pointer;" title="Siam Ruby"></span>
+                        <span class="theme-dot theme-majestica" onclick="setTheme('majestica')" title="Majestica"></span>
+                        <span class="theme-dot theme-buddha-gold" onclick="setTheme('buddha-gold')" title="Golden"></span>
+                        <span class="theme-dot theme-lotus-pink" onclick="setTheme('lotus-pink')" title="Lotus Pink"></span>
+                        <span class="theme-dot theme-dhamma-green" onclick="setTheme('dhamma-green')" title="Green"></span>
+                        <span class="theme-dot theme-siam-ruby" onclick="setTheme('siam-ruby')" title="Siam Ruby"></span>
                     </div>
                 </div>
             </div>
@@ -1266,7 +1256,6 @@
 
     <!-- App System Scripts -->
     <script>
-        // Academic เกรดและคะแนน
         const gradeMap = {
             "A": 4.0, "B+": 3.5, "B": 3.0, "C+": 2.5,
             "C": 2.0, "D+": 1.5, "D": 1.0, "F": 0.0
@@ -1303,14 +1292,12 @@
             darkMode: true
         };
 
-        // Segment Filtering Options for registered courses screen view
         let currentYearFilter = 'all';
         let currentSemFilter = 'all';
 
         let gpaChartInstance = null;
-        let deleteIndexTarget = -1; // Safely stores index deletion targets
+        let deleteIndexTarget = -1; 
 
-        // Load & Setup State
         function initApp() {
             const localCourses = localStorage.getItem("gradway_courses");
             const localStudent = localStorage.getItem("gradway_student");
@@ -1320,7 +1307,6 @@
             if (localCourses) {
                 state.courses = JSON.parse(localCourses);
             } else {
-                // Populate default courses directly from image screenshots (Total 40 Courses, 95 Credits)
                 state.courses = [
                     // ปีการศึกษา 2567/1 (1-1) - 18 Credits
                     { code: "321-1101", name: "สุนทรียศาสตร์ ศิลปะและการออกแบบ", credits: 3, grade: "A", term: "1-1", category: "1.6" },
@@ -1383,12 +1369,10 @@
                 state.darkMode = true;
             }
 
-            // Apply Theme configs
             document.body.classList.toggle("light", !state.darkMode);
             document.body.classList.toggle("dark", state.darkMode);
             document.documentElement.setAttribute("data-theme", state.theme);
             
-            // Adjust header toggle button
             const themeToggleBtn = document.getElementById("themeToggleBtn");
             if (state.darkMode) {
                 themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i> สว่าง';
@@ -1400,21 +1384,19 @@
             document.querySelectorAll(".theme-dot").forEach(dot => {
                 dot.style.border = "2px solid transparent";
                 if (dot.classList.contains(`theme-${state.theme}`)) {
-                    dot.style.borderColor = "var(--bright-gold)";
+                    dot.style.borderColor = "var(--accent-gold)";
                     dot.style.boxShadow = "0 0 8px var(--bright-gold)";
                 } else {
                     dot.style.boxShadow = "none";
                 }
             });
 
-            // Set profile text elements
             document.getElementById("studentName").innerText = state.student.name;
             document.getElementById("studentID").innerText = state.student.id;
 
             updateAllCalculations();
         }
 
-        // Switch Screen Tab layouts
         function switchTab(tabId, el) {
             document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
             el.classList.add("active");
@@ -1424,7 +1406,6 @@
             });
             document.getElementById(`screen-${tabId}`).style.display = "block";
 
-            // Reset scrolling content area to top when switching viewtabs
             document.getElementById("appContent").scrollTop = 0;
 
             if (tabId === 'dashboard') {
@@ -1432,7 +1413,6 @@
             }
         }
 
-        // Theme Configuration Actions
         function setTheme(themeName) {
             state.theme = themeName;
             localStorage.setItem("gradway_theme", themeName);
@@ -1464,20 +1444,17 @@
             updateAllCalculations();
         }
 
-        // Core Calculation Engine
         function updateAllCalculations() {
             let totalEnrolledCredits = 0;
-            let earnedCreditsSum = 0; // Credits where grade is not F
+            let earnedCreditsSum = 0; 
             let totalGradePoints = 0;
             let hasF = false;
 
-            // Categories track for checklist
             let categoryCredits = {
                 "1.1": 0, "1.2": 0, "1.3": 0, "1.4": 0, "1.5": 0, "1.6": 0,
                 "2.0": 0, "3.1": 0, "3.2": 0, "4.0": 0
             };
 
-            // Detect repeated courses
             let courseCountMap = {};
             let hasRepeated = false;
 
@@ -1485,7 +1462,6 @@
                 let gp = gradeMap[c.grade];
                 let cred = parseFloat(c.credits);
 
-                // If credit is 0, it doesn't affect GPA computation but still contributes in status/repeats
                 if (cred > 0) {
                     totalEnrolledCredits += cred;
                     totalGradePoints += (gp * cred);
@@ -1507,11 +1483,9 @@
 
             let gpax = totalEnrolledCredits > 0 ? (totalGradePoints / totalEnrolledCredits) : 0.00;
 
-            // Summary metrics interface
             document.getElementById("gpaxVal").innerText = gpax.toFixed(2);
             document.getElementById("totalCreditsVal").innerText = earnedCreditsSum;
 
-            // Determine Student Academic Status (ปกติ / วิทยาทัณฑ์ / พ้นสภาพ)
             const statusVal = document.getElementById("statusVal");
             const statusSub = document.getElementById("statusSub");
 
@@ -1533,7 +1507,6 @@
                 statusSub.innerText = "รักษาสถานภาพผลการศึกษาปกติดี";
             }
 
-            // Predict Honors Class Eligibility
             const honorVal = document.getElementById("honorVal");
             const honorSub = document.getElementById("honorSub");
 
@@ -1550,7 +1523,7 @@
                 honorVal.className = "value status-normal";
                 honorSub.innerText = "ผ่านเกณฑ์เกียรตินิยมอันดับหนึ่ง (>= 3.75)";
             } else if (gpax >= 3.25) {
-                honorVal.innerText = "เกียรตินิยมอันดับ 2";
+                honorVal.innerText = "เกียตินิยมอันดับ 2";
                 honorVal.className = "value status-probation";
                 honorSub.innerText = "ผ่านเกณฑ์เกียรตินิยมอันดับสอง (3.25 - 3.74)";
             } else {
@@ -1559,14 +1532,12 @@
                 honorSub.innerText = "เกรดเฉลี่ยสะสมปัจจุบันต่ำกว่าเกณฑ์ 3.25";
             }
 
-            // Total Progress
             const overallProgVal = document.getElementById("overallProgVal");
             const overallProgSub = document.getElementById("overallProgSub");
             let progressPercentage = Math.min(100, Math.round((earnedCreditsSum / 133) * 100));
             overallProgVal.innerText = `${progressPercentage}%`;
             overallProgSub.innerText = `เก็บวิชาได้ ${earnedCreditsSum} จาก 133 หน่วยกิตทั้งหมด`;
 
-            // Update Curriculum Checklist UI Elements
             updateChecklistItem("1.1", categoryCredits["1.1"], 3);
             updateChecklistItem("1.2", categoryCredits["1.2"], 6);
             updateChecklistItem("1.3", categoryCredits["1.3"], 3);
@@ -1578,7 +1549,6 @@
             updateChecklistItem("major-elec", categoryCredits["3.2"], 15);
             updateChecklistItem("free", categoryCredits["4.0"], 6);
 
-            // Group Summaries calculation
             let geSum = categoryCredits["1.1"] + categoryCredits["1.2"] + categoryCredits["1.3"] + categoryCredits["1.4"] + categoryCredits["1.5"] + categoryCredits["1.6"];
             let specSum = categoryCredits["3.1"] + categoryCredits["3.2"];
             
@@ -1587,14 +1557,12 @@
             document.getElementById("cat-major-progress").innerText = `${specSum} / 67 นก.`;
             document.getElementById("cat-free-progress").innerText = `${categoryCredits["4.0"]} / 6 นก.`;
 
-            // Display completion status notification banners dynamically
             renderChecklistNotifiers(geSum, categoryCredits["2.0"], specSum, categoryCredits["4.0"]);
 
             filterCourses();
             updateChart();
         }
 
-        // Sub-category Checklist Items Status & Progress update
         function updateChecklistItem(id, current, min) {
             const bar = document.getElementById(`bar-${id}`);
             const check = document.getElementById(`check-${id}`);
@@ -1611,7 +1579,6 @@
             }
         }
 
-        // Render checklist completed group banners
         function renderChecklistNotifiers(geCredits, coreCredits, specCredits, freeCredits) {
             const container = document.getElementById("checklistNotificationArea");
             container.innerHTML = "";
@@ -1650,9 +1617,7 @@
             }
         }
 
-        // Interactive Segment Filtering functions
         function filterByYear(year, element) {
-            // UI Visual Selection Swap
             const siblings = element.parentNode.children;
             for (let sibling of siblings) {
                 sibling.classList.remove("active");
@@ -1664,7 +1629,6 @@
         }
 
         function filterBySemester(sem, element) {
-            // UI Visual Selection Swap
             const siblings = element.parentNode.children;
             for (let sibling of siblings) {
                 sibling.classList.remove("active");
@@ -1675,19 +1639,16 @@
             filterCourses();
         }
 
-        // Filter and view registered courses list inside Course tab list
         function filterCourses() {
             const container = document.getElementById("courseListContainer");
             container.innerHTML = "";
 
             let displayedCourses = state.courses;
 
-            // Step 1: Filter Year Segment
             if (currentYearFilter !== 'all') {
                 displayedCourses = displayedCourses.filter(c => c.term.startsWith(currentYearFilter));
             }
 
-            // Step 2: Filter Semester Pill Segment
             if (currentSemFilter !== 'all') {
                 displayedCourses = displayedCourses.filter(c => c.term.endsWith(currentSemFilter));
             }
@@ -1702,7 +1663,6 @@
                 return;
             }
 
-            // Render matching list rows as custom mobile cards
             displayedCourses.forEach((c) => {
                 let actualIdx = state.courses.indexOf(c);
                 let div = document.createElement("div");
@@ -1745,14 +1705,12 @@
             });
         }
 
-        // Guard HTML Strings escape helper
         function escapeHTML(str) {
             return str.replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
             );
         }
 
-        // Chronological GPA computation
         function calculateTermData() {
             let termsData = {};
             let semesterOrder = [
@@ -1791,7 +1749,6 @@
                     runningCredits += term.totalCredits;
                     let cumGpa = runningPoints / runningCredits;
 
-                    // Concise layout labels for narrow mobile viewports
                     let shortLabel = sem.replace("-", "/");
                     cleanChartLabels.push(shortLabel);
                     gpaValues.push(parseFloat(termGpa.toFixed(2)));
@@ -1802,7 +1759,6 @@
             return { labels: cleanChartLabels, gpa: gpaValues, gpax: gpaxValues };
         }
 
-        // Re-render Trend Chart
         function updateChart() {
             const canvasElement = document.getElementById("gpaChart");
             if (!canvasElement) return;
@@ -1875,7 +1831,6 @@
             });
         }
 
-        // Profile Modal Actions
         function openProfileModal() {
             document.getElementById("editName").value = state.student.name;
             document.getElementById("editID").value = state.student.id;
@@ -1899,7 +1854,6 @@
             updateAllCalculations();
         }
 
-        // Course Modal Management
         function openAddCourseModal() {
             document.getElementById("modalTitle").innerText = "จดบันทึกรายวิชาเรียน";
             document.getElementById("courseForm").reset();
@@ -1950,7 +1904,6 @@
             document.getElementById("courseModal").classList.add("show");
         }
 
-        // Custom Modal Confirmation deletion to strictly respect guidelines
         function deleteCourse(index) {
             deleteIndexTarget = index;
             document.getElementById("confirmModal").classList.add("show");
@@ -1970,7 +1923,6 @@
             closeConfirmModal();
         };
 
-        // Window interaction click outsides
         window.onclick = function(event) {
             const profileModal = document.getElementById("profileModal");
             const courseModal = document.getElementById("courseModal");
@@ -1986,7 +1938,6 @@
             }
         };
 
-        // Fire on mount
         window.onload = initApp;
     </script>
 </body>
